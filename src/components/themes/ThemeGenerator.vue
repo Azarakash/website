@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, defineAsyncComponent, ref } from "vue";
 import { CustomizationTabs, DefaultColors, DefaultCSS } from "@/constants/customization.ts";
 import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
@@ -10,9 +10,10 @@ import LauncherThemed from "@/components/themes/windows/LauncherThemed.vue";
 import SettingsThemed from "@/components/themes/windows/SettingsThemed.vue";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
-import { VueCodeHighlighterMulti } from "vue-code-highlighter";
 import "vue-code-highlighter/dist/style.css";
 import { transformToCss } from "@/lib/helpers/transform-to-css.ts";
+
+const AsyncHighlighter = defineAsyncComponent(() => import("@/components/themes/AsyncHighlighter.vue"));
 
 const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
 
@@ -144,11 +145,7 @@ function importTheme() {}
           </button>
         </div>
         <div class="select-text">
-          <VueCodeHighlighterMulti
-            v-if="codeView"
-            :key="currentCode.key"
-            :code="currentCode.data"
-          />
+          <AsyncHighlighter v-if="codeView" :code="currentCode" />
         </div>
         <ColorGenerator
           v-if="selected === 'colors'"

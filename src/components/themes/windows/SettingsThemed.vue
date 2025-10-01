@@ -45,7 +45,7 @@ const itemsThemesSettings = [
 <template>
   <div class="h-fit min-w-full w-fit flex flex-nowrap border border-[#7a7a7a]">
     <div
-      class="h-full flex sm:shrink-0 flex-col"
+      class="h-full flex flex-col sm:shrink-0"
       :style="{ background: base }"
     >
       <div
