@@ -44,8 +44,11 @@ const buttons = {
 <template>
   <div class="h-full w-full flex flex-col border-x border-[#7a7a7a]">
     <div
-      class="flex flex-nowrap items-center justify-between border-t border-[#7a7a7a] p-1"
-      :style="{ background: background }"
+      class="flex flex-nowrap items-center justify-between border-t border-[#7a7a7a]"
+      :style="{
+        background: background,
+        padding   : '4px',
+      }"
     >
       <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap">
         <div

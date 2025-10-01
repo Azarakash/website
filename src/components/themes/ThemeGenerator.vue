@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { CustomizationTabs, DefaultColors } from "@/constants/customization.ts";
+import { CustomizationTabs, DefaultColors, DefaultCSS } from "@/constants/customization.ts";
 import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
 import ButtonsStyler from "@/components/themes/ButtonsStyler.vue";
@@ -12,10 +12,13 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { VueCodeHighlighterMulti } from "vue-code-highlighter";
 import "vue-code-highlighter/dist/style.css";
+import { transformToCss } from "@/lib/helpers/transform-to-css.ts";
 
-const cssEnabled = ref<boolean>(false);
 const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
+
 const colors = ref<typeof DefaultColors>({ ...DefaultColors });
+const styles = ref<typeof DefaultCSS>({ ...DefaultCSS });
+
 const codeView = ref<boolean>(false);
 
 const currentCode = computed(() => {
@@ -39,7 +42,7 @@ const currentCode = computed(() => {
       {
         "lang" : "css",
         "title": "themeStyle.css",
-        "code" : "/* WIP */",
+        "code" : transformToCss(styles.value),
       },
     ],
   };
@@ -59,7 +62,7 @@ function resetColors() {
 }
 
 function toggleCSS() {
-  cssEnabled.value = !cssEnabled.value;
+  styles.value.Enabled = !styles.value.Enabled;
   selected.value = "colors";
 }
 function downloadTheme() {
@@ -71,8 +74,8 @@ function downloadTheme() {
     return;
   }
 
-  folder.file("themeStyle.css", "/* WIP */");
   folder.file("theme.json", currentCode.value.data[0].code);
+  folder.file("themeStyle.css", currentCode.value.data[1].code);
 
   zip.generateAsync({ "type": "blob" }).then(content => {
     saveAs(content, `customTheme${randomKey}.zip`);
@@ -100,7 +103,7 @@ function importTheme() {}
           :key="tab.Key"
           :aria-label="tab.Name"
           :title="tab.Name"
-          :disabled="tab.Key !== 'colors' && !cssEnabled"
+          :disabled="tab.Key !== 'colors' && !styles.Enabled"
           class="group px-4 py-2 first:pt-4 disabled:opacity-60"
         >
           <span
@@ -120,7 +123,8 @@ function importTheme() {}
         <div class="flex flex-wrap gap-4">
           <button
             v-for="item in [
-              { 'name': 'Toggle CSS', 'icon': 'i-lucide-brush', 'action': toggleCSS, 'active': cssEnabled },
+              { 'name': 'Toggle CSS', 'icon': 'i-lucide-brush',
+                'action': toggleCSS, 'active': styles.Enabled },
               { 'name': 'Export', 'icon': 'i-lucide-share-2', 'action': downloadTheme, 'active': false },
               { 'name': 'Show JSON & CSS', 'icon': 'i-lucide-braces',
                 'action': toggleCodeView, 'active': codeView },

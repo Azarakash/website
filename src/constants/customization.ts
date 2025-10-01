@@ -45,3 +45,16 @@ export const DefaultColors = {
    * "fadeColor"      : "#000000", // not sure what this does
    */
 };
+export const DefaultCSS = {
+  "Enabled": false,
+  "Widget" : {
+    "Padding": {
+      "Top"   : 2,
+      "Right" : 4,
+      "Bottom": 2,
+      "Left"  : 4,
+    },
+    "Border": false,
+  },
+  "Handle": false,
+};
