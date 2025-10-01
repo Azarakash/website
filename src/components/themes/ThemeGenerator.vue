@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { CustomizationTabs, DefaultColors } from "@/constants/customization.ts";
 import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
@@ -10,9 +10,35 @@ import LauncherThemed from "@/components/themes/windows/LauncherThemed.vue";
 import SettingsThemed from "@/components/themes/windows/SettingsThemed.vue";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
+import { VueCodeHighlighterMulti } from "vue-code-highlighter";
+import "vue-code-highlighter/dist/style.css";
 
 const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
 const colors = ref<typeof DefaultColors>({ ...DefaultColors });
+const codeView = ref<boolean>(false);
+
+const currentCode = computed(() => {
+  return [
+    {
+      "lang" : "json",
+      "title": "theme.json",
+      "code" : JSON.stringify({
+        "colors": {
+          ...colors.value,
+          "fadeAmount": 0.5,
+          "fadeColor" : "#000000",
+        },
+        "name"   : `A Custom Theme <${Math.floor(Math.random() * 10_000)}>`,
+        "widgets": "Fusion",
+      }, null, 2),
+    },
+    {
+      "lang" : "css",
+      "title": "themeStyle.css",
+      "code" : "/* WIP */",
+    },
+  ];
+});
 
 function selectColor({
   key,
@@ -37,20 +63,16 @@ function downloadTheme() {
   }
 
   folder.file("themeStyle.css", "/* WIP */");
-  folder.file("theme.json", JSON.stringify({
-    "colors": {
-      ...colors.value,
-      "fadeAmount": 0.5,
-      "fadeColor" : "#000000",
-    },
-    "name"   : `A Custom Theme <${randomKey}>`,
-    "widgets": "Fusion",
-  }, null, 2));
+  folder.file("theme.json", currentCode.value[0].code);
 
   zip.generateAsync({ "type": "blob" }).then(content => {
     saveAs(content, `customTheme${randomKey}.zip`);
   });
 }
+function toggleCodeView() {
+  codeView.value = !codeView.value;
+}
+function importTheme() {}
 </script>
 
 <template>
@@ -85,9 +107,29 @@ function downloadTheme() {
         </button>
       </div>
       <div class="w-full flex flex-col gap-4 py-4 pl-4 pr-4 sm:pl-0">
-        <button @click="downloadTheme" class="w-fit rounded-md p-3 leading-none transition-[background-color] hover:bg-catppuccin-800">
-          Download
-        </button>
+        <div class="flex flex-wrap gap-4 sm:flex-nowrap">
+          <button
+            v-for="item in [
+              { 'name': 'Export', 'icon': 'i-lucide-share-2', 'action': downloadTheme },
+              { 'name': 'Show JSON & CSS', 'icon': 'i-lucide-braces', 'action': toggleCodeView },
+              { 'name': 'Import Colors', 'icon': 'i-lucide-import', 'action': importTheme },
+            ]"
+            :key="item.name"
+            @click="item.action"
+            class="w-fit flex flex-nowrap items-center gap-4 rounded-md p-2 transition-[background-color] hover:bg-catppuccin-800"
+          >
+            <span :class="[item.icon, 'block size-6']" />
+            <span class="block text-white font-medium">
+              {{ item.name }}
+            </span>
+          </button>
+        </div>
+        <div class="select-text">
+          <VueCodeHighlighterMulti
+            v-if="codeView"
+            :code="currentCode"
+          />
+        </div>
         <ColorGenerator
           v-if="selected === 'colors'"
           :colors="colors"
