@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { DefaultColors } from "@/constants/customization.ts";
-import { computed } from "vue";
+import { computed, inject } from "vue";
 import { useDebounceFn } from "@vueuse/core";
+import type { TranslationsReferenceType } from "@/types/translations-reference.type.ts";
+import { TranslationsContextKey } from "@/constants/application.ts";
 
 const { colors, setColor, resetColors } = defineProps<{
   "colors"  : typeof DefaultColors;
@@ -15,6 +17,8 @@ const { colors, setColor, resetColors } = defineProps<{
   "resetColors": () => void;
 }>();
 const colorEntries = computed(() => Object.entries(colors));
+
+const translations = inject<TranslationsReferenceType>(TranslationsContextKey);
 
 const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
   const data = target as Partial<{ "name": keyof typeof DefaultColors; "value": string }>;
@@ -49,6 +53,42 @@ const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
       <p class="text-gray-400 font-medium">
         {{ name }}
       </p>
+    </div>
+  </div>
+  <div class="grid cols-1 select-text gap-4 sm:cols-2">
+    <div
+      class="flex flex-col gap-2 border border-[#7a7a7a] p-2"
+      :style="{ background: colors.Window, }"
+    >
+      <p
+        class="text-sm leading-none"
+        :style="{ color: colors.Link }"
+      >
+        I'm a link!
+      </p>
+      <p
+        class="text-sm leading-none"
+        :style="{ color: colors.Text }"
+      >
+        I'm a text!
+      </p>
+    </div>
+    <div class="flex flex-col border border-[#7a7a7a]">
+      <div class="w-full p-2 text-sm leading-none" :style="{ background: colors.Base }">
+        日本語
+      </div>
+      <div class="w-full p-2 text-sm leading-none" :style="{ background: colors.AlternateBase }">
+        Cute Engwish
+      </div>
+      <div
+        class="w-full p-2 text-sm leading-none"
+        :style="{
+          background: colors.Highlight,
+          color     : colors.HighlightedText,
+        }"
+      >
+        {{ translations?.Info?.Name }}
+      </div>
     </div>
   </div>
 </template>

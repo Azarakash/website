@@ -37,14 +37,15 @@ const buttons = [
 const itemsThemesSettings = [
   { "name": "Icons", "input": "Lucide (White)" },
   { "name": "Widgets", "input": "Custom" },
+  // users will be able to change cat packs only from the home page, so no need for reactivity
   { "name": "Cat", "input": catPackStore.name },
 ];
 </script>
 
 <template>
-  <div class="h-full w-full flex flex-nowrap border border-[#7a7a7a]">
+  <div class="h-fit min-w-full w-fit flex flex-nowrap border border-[#7a7a7a]">
     <div
-      class="h-full flex shrink-0 flex-col"
+      class="h-full flex sm:shrink-0 flex-col"
       :style="{ background: base }"
     >
       <div
@@ -62,7 +63,7 @@ const itemsThemesSettings = [
           src="/favicon.webp"
           alt="Freesm Launcher logo"
         />
-        <div v-else :class="[button.icon, 'size-6']" />
+        <div v-else :class="[button.icon, 'shrink-0 size-6']" />
         <p class="text-sm">
           {{ button.name }}
         </p>
