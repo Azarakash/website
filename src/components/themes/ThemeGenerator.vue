@@ -12,8 +12,12 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import "vue-code-highlighter/dist/style.css";
 import { transformToCss } from "@/lib/helpers/transform-to-css.ts";
+import HighlighterLoading from "@/components/themes/HighlighterLoading.vue";
 
-const AsyncHighlighter = defineAsyncComponent(() => import("@/components/themes/AsyncHighlighter.vue"));
+const AsyncHighlighter = defineAsyncComponent({
+  "loader"          : () => import("@/components/themes/AsyncHighlighter.vue"),
+  "loadingComponent": HighlighterLoading,
+});
 
 const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
 
