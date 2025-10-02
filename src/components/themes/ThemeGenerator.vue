@@ -5,7 +5,6 @@ import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
 import ButtonsStyler from "@/components/themes/ButtonsStyler.vue";
 import InputsStyler from "@/components/themes/InputsStyler.vue";
-import OthersStyler from "@/components/themes/OthersStyler.vue";
 import LauncherThemed from "@/components/themes/windows/LauncherThemed.vue";
 import SettingsThemed from "@/components/themes/windows/SettingsThemed.vue";
 import { saveAs } from "file-saver";
@@ -185,8 +184,7 @@ async function handleImport(event: Event) {
         />
         <GeneralStyler v-else-if="selected === 'general'" />
         <ButtonsStyler v-else-if="selected === 'buttons'" />
-        <InputsStyler v-else-if="selected === 'inputs'" />
-        <OthersStyler v-else />
+        <InputsStyler v-else />
         <LauncherThemed
           :highlight="colors.Highlight"
           :highlighted-text="colors.HighlightedText"

@@ -19,11 +19,6 @@ export const CustomizationTabs = [
     "Name": "Inputs tab",
     "Icon": "i-lucide-text-cursor-input",
   },
-  {
-    "Key" : "others",
-    "Name": "Others tab",
-    "Icon": "i-lucide-ellipsis",
-  },
 ] as const;
 export const DefaultColors = {
   "AlternateBase"  : "#2b2b2b",
