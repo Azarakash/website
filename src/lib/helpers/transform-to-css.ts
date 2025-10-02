@@ -1,10 +1,6 @@
 import type { DefaultCSS } from "@/constants/customization.ts";
 
 export function transformToCss(theme: typeof DefaultCSS): string {
-  if (!theme.Enabled) {
-    return "/* CSS styles are not enabled */";
-  }
-
   const { Padding } = theme.Widget;
 
   return "" +

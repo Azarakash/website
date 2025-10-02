@@ -41,8 +41,7 @@ export const DefaultColors = {
    */
 };
 export const DefaultCSS = {
-  "Enabled": false,
-  "Widget" : {
+  "Widget": {
     "Padding": {
       "Top"   : 2,
       "Right" : 4,

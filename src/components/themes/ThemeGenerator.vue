@@ -25,7 +25,6 @@ const codeView = ref<boolean>(false);
 const colors = ref<typeof DefaultColors>({ ...DefaultColors });
 const styles = ref<typeof DefaultCSS>({ ...DefaultCSS });
 
-
 const currentCode = computed(() => {
   return {
     // needed to re-render the code view component
@@ -66,10 +65,6 @@ function resetColors() {
   colors.value = { ...DefaultColors };
 }
 
-function toggleCSS() {
-  styles.value.Enabled = !styles.value.Enabled;
-  selected.value = "colors";
-}
 function downloadTheme() {
   const zip = new JSZip;
   const randomKey = Math.floor(Math.random() * 10_000);
@@ -121,13 +116,12 @@ async function handleImport(event: Event) {
           :key="tab.Key"
           :aria-label="tab.Name"
           :title="tab.Name"
-          :disabled="tab.Key !== 'colors' && !styles.Enabled"
-          class="group px-4 py-2 first:pt-4 disabled:opacity-60"
+          class="group px-4 py-2 first:pt-4"
         >
           <span
             :class="[
               'grid size-10 place-items-center rounded-md transition-[background-color]',
-              'group-hover:bg-catppuccin-800 group-disabled:group-hover:bg-transparent',
+              'group-hover:bg-catppuccin-800',
               selected === tab.Key
                 ? 'bg-catppuccin-800'
                 : 'bg-catppuccin-900',
@@ -141,8 +135,6 @@ async function handleImport(event: Event) {
         <div class="flex flex-wrap gap-4">
           <button
             v-for="item in [
-              { 'name': 'Toggle CSS', 'icon': 'i-lucide-brush',
-                'action': toggleCSS, 'active': styles.Enabled },
               { 'name': 'Export', 'icon': 'i-lucide-share-2', 'action': downloadTheme, 'active': false },
               { 'name': 'Show JSON & CSS', 'icon': 'i-lucide-braces',
                 'action': toggleCodeView, 'active': codeView },
