@@ -21,11 +21,11 @@ const AsyncHighlighter = defineAsyncComponent({
 });
 
 const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
+const codeView = ref<boolean>(false);
 
 const colors = ref<typeof DefaultColors>({ ...DefaultColors });
 const styles = ref<typeof DefaultCSS>({ ...DefaultCSS });
 
-const codeView = ref<boolean>(false);
 
 const currentCode = computed(() => {
   return {
@@ -171,7 +171,7 @@ async function handleImport(event: Event) {
             type="file"
             accept="application/json"
             @change="handleImport"
-            class="invisible"
+            class="hidden"
           />
         </div>
         <div class="select-text">
