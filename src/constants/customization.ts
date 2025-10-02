@@ -40,15 +40,34 @@ export const DefaultColors = {
    * "fadeColor"      : "#000000", // not sure what this does
    */
 };
+
+/** 'false' means that we don't need to apply these styles */
 export const DefaultCSS = {
-  "Widget": {
-    "Padding": {
-      "Top"   : 2,
-      "Right" : 4,
-      "Bottom": 2,
-      "Left"  : 4,
-    },
-    "Border": false,
+  "LayoutBorder"   : false,
+  "QObject::handle": false,
+  "QToolButton"    : {
+    "border"          : false,
+    "background-color": false,
+    "padding"         : false,
   },
-  "Handle": false,
+  "QToolButton:on"     : { "background-color": false },
+  "QToolButton:hover"  : { "background-color": false },
+  "QToolButton:pressed": { "background-color": false },
+  "QPushButton"        : {
+    "border"          : false,
+    "background-color": false,
+    "padding"         : false,
+  },
+  "QPushButton:on"     : { "background-color": false },
+  "QPushButton:hover"  : { "background-color": false },
+  "QPushButton:pressed": { "background-color": false },
+  "QTabWidget::pane"   : { "border": false },
+  "QTabWidget::tab-bar": { "left": false },
+  "QTabBar::tab"       : {
+    "padding"     : false,
+    "margin-right": false,
+    "border"      : false,
+  },
+  "QTabBar::tab:hover"   : { "background-color": false },
+  "QTabBar::tab:selected": { "background-color": false },
 };

@@ -20,7 +20,7 @@ export function readThemeGeneratorStyles(): typeof DefaultCSS {
     typeof parsed !== "object" ||
     parsed === null ||
     // a shallow validation that at least one element is present
-    !("Handle" in parsed)
+    !("LayoutBorder" in parsed)
   ) {
     return DefaultCSS;
   }
