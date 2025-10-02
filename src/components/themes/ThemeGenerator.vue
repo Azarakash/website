@@ -66,6 +66,10 @@ function selectColor({
   colors.value[key] = color;
 }
 function resetColors() {
+  if (!confirm("Are you sure about resetting current colors?")) {
+    return;
+  }
+
   colors.value = { ...DefaultColors };
 }
 
