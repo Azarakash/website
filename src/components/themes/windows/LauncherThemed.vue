@@ -42,7 +42,7 @@ const buttons = {
 </script>
 
 <template>
-  <div class="h-full w-full flex flex-col border-x border-[#7a7a7a]">
+  <div class="h-full min-w-84 w-full flex flex-col border-x border-[#7a7a7a]">
     <div
       class="flex flex-nowrap items-center justify-between border-t border-[#7a7a7a]"
       :style="{

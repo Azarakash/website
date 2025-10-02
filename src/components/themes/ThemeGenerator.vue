@@ -13,6 +13,7 @@ import JSZip from "jszip";
 import "vue-code-highlighter/dist/style.css";
 import { transformToCss } from "@/lib/helpers/transform-to-css.ts";
 import HighlighterLoading from "@/components/themes/HighlighterLoading.vue";
+import { readImportedColors } from "@/lib/helpers/read-imported-colors.ts";
 
 const AsyncHighlighter = defineAsyncComponent({
   "loader"          : () => import("@/components/themes/AsyncHighlighter.vue"),
@@ -76,6 +77,8 @@ function downloadTheme() {
   const folder = zip.folder(`customTheme${randomKey}`);
 
   if (!folder) {
+    console.error("Couldn't create a folder for the theme zip");
+
     return;
   }
 
@@ -89,7 +92,18 @@ function downloadTheme() {
 function toggleCodeView() {
   codeView.value = !codeView.value;
 }
-function importTheme() {}
+async function handleImport(event: Event) {
+  const importedColors = await readImportedColors({ event });
+
+  if (importedColors === 0) {
+    return;
+  }
+
+  colors.value = {
+    ...colors.value,
+    ...importedColors,
+  };
+}
 </script>
 
 <template>
@@ -133,7 +147,6 @@ function importTheme() {}
               { 'name': 'Export', 'icon': 'i-lucide-share-2', 'action': downloadTheme, 'active': false },
               { 'name': 'Show JSON & CSS', 'icon': 'i-lucide-braces',
                 'action': toggleCodeView, 'active': codeView },
-              { 'name': 'Import Colors', 'icon': 'i-lucide-import', 'action': importTheme, 'active': false, },
             ]"
             :key="item.name"
             @click="item.action"
@@ -147,6 +160,19 @@ function importTheme() {}
               {{ item.name }}
             </span>
           </button>
+          <label for="import-colors" class="w-fit flex flex-nowrap cursor-pointer items-center gap-4 rounded-md p-2">
+            <span class="i-lucide-import block size-6" />
+            <span class="block text-white font-medium">
+              Import Colors
+            </span>
+          </label>
+          <input
+            id="import-colors"
+            type="file"
+            accept="application/json"
+            @change="handleImport"
+            class="invisible"
+          />
         </div>
         <div class="select-text">
           <AsyncHighlighter v-if="codeView" :code="currentCode" />

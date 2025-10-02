@@ -41,18 +41,19 @@ const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
     <div
       v-for="[name, color] in colorEntries"
       :key="name"
-      class="flex flex-nowrap items-center gap-2"
+      class="flex flex-nowrap items-center"
     >
       <input
         class="size-10 shrink-0 cursor-pointer rounded-md bg-catppuccin-800 p-2"
         type="color"
         @input="handleColorInput"
+        :id="`color-${name}`"
         :name="name"
         :value="color"
       />
-      <p class="text-gray-400 font-medium">
+      <label :for="`color-${name}`" class="cursor-pointer pl-2 text-gray-400 font-medium">
         {{ name }}
-      </p>
+      </label>
     </div>
   </div>
   <div class="grid cols-1 select-text gap-4 sm:cols-2">
