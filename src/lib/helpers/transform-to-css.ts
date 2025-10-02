@@ -17,8 +17,7 @@ export function transformToCss({
       "\n" + String.raw`#statusBar,` +
       "\n" + String.raw`#newsToolBar {` +
       "\n" + String.raw`  border: 0;` +
-      "\n" + String.raw`}` +
-      "\n" + String.raw``
+      "\n" + String.raw`}`
     ) : "";
 
   const tabWidgetPane = theme["QTabWidget::pane"].border
@@ -69,6 +68,27 @@ export function transformToCss({
       "\n" + String.raw`}`
     ) : "";
 
+  const toolButton = (
+    theme["QToolButton"].border ||
+    theme["QToolButton"].padding ||
+    theme["QToolButton"]["background-color"]
+  ) ? ("") : "";
+  const pushButton = (
+    theme["QPushButton"].border ||
+    theme["QPushButton"].padding ||
+    theme["QPushButton"]["background-color"]
+  ) ? ("") : "";
+  const toolButtonHover = theme["QToolButton:hover"]["background-color"]
+    ? ("") : "";
+  const pushButtonHover = theme["QPushButton:hover"]["background-color"]
+    ? ("") : "";
+  const toolButtonPressed = theme["QToolButton:pressed"]["background-color"]
+    ? ("") : "";
+  const pushButtonPressed = theme["QPushButton:pressed"]["background-color"]
+    ? ("") : "";
+  const toolButtonOn = theme["QToolButton:on"]["background-color"]
+    ? ("") : "";
+
   const objectHandle = theme["QObject::handle"]
     ? (
       "\n" + String.raw`QObject::handle {` +
@@ -98,7 +118,13 @@ export function transformToCss({
     ""   + tabBarTabSelected +
     "\n" + String.raw`/* */` + "\n" +
     "\n" + String.raw`/* Buttons */` +
-    ""   + "" +
+    ""   + toolButton +
+    ""   + pushButton +
+    ""   + toolButtonHover +
+    ""   + pushButtonHover +
+    ""   + toolButtonPressed +
+    ""   + pushButtonPressed +
+    ""   + toolButtonOn +
     "\n" + String.raw`/* */` + "\n" +
     "\n" + String.raw`/* Toolbar mover */` +
     ""   + objectHandle +

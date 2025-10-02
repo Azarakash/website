@@ -28,6 +28,8 @@ const colors = ref<typeof DefaultColors>({ ...DefaultColors, ...(readThemeGenera
 const styles = ref<typeof DefaultCSS>({ ...DefaultCSS, ...(readThemeGeneratorStyles()) });
 
 const currentCode = computed(() => {
+  const computedStyles = transformToCss({ "theme": styles.value, "highlight": colors.value.Highlight });
+
   return {
     // needed to re-render the code view component
     "key" : Math.random().toString(),
@@ -48,7 +50,7 @@ const currentCode = computed(() => {
       {
         "lang" : "css",
         "title": "themeStyle.css",
-        "code" : transformToCss({ "theme": styles.value, "highlight": colors.value.Highlight }).result,
+        "code" : computedStyles.changed ? computedStyles.result : "/* You didn't change any CSS styles */",
       },
     ],
   };
