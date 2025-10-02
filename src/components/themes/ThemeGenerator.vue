@@ -4,7 +4,6 @@ import { CustomizationTabs, DefaultColors, DefaultCSS } from "@/constants/custom
 import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
 import ButtonsStyler from "@/components/themes/ButtonsStyler.vue";
-import InputsStyler from "@/components/themes/InputsStyler.vue";
 import LauncherThemed from "@/components/themes/windows/LauncherThemed.vue";
 import SettingsThemed from "@/components/themes/windows/SettingsThemed.vue";
 import { saveAs } from "file-saver";
@@ -49,7 +48,7 @@ const currentCode = computed(() => {
       {
         "lang" : "css",
         "title": "themeStyle.css",
-        "code" : transformToCss(styles.value),
+        "code" : transformToCss({ "theme": styles.value, "highlight": colors.value.Highlight }).result,
       },
     ],
   };
@@ -185,8 +184,7 @@ watchEffect(() => {
           :reset-colors="resetColors"
         />
         <GeneralStyler v-else-if="selected === 'general'" />
-        <ButtonsStyler v-else-if="selected === 'buttons'" />
-        <InputsStyler v-else />
+        <ButtonsStyler v-else />
         <LauncherThemed
           :highlight="colors.Highlight"
           :highlighted-text="colors.HighlightedText"

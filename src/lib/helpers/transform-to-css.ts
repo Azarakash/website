@@ -1,6 +1,15 @@
-import type { DefaultCSS } from "@/constants/customization.ts";
+import { DefaultCSS } from "@/constants/customization.ts";
 
-export function transformToCss(theme: typeof DefaultCSS): string {
+export function transformToCss({
+  theme,
+  highlight,
+}: {
+  "theme"    : typeof DefaultCSS;
+  "highlight": string;
+}): {
+  "changed": boolean;
+  "result" : string;
+} {
   const layout = theme.LayoutBorder
     ? (
       "\n" + String.raw`#mainToolBar,` +
@@ -11,10 +20,11 @@ export function transformToCss(theme: typeof DefaultCSS): string {
       "\n" + String.raw`}` +
       "\n" + String.raw``
     ) : "";
+
   const tabWidgetPane = theme["QTabWidget::pane"].border
     ? (
       "\n" + String.raw`QTabWidget::pane {` +
-      "\n" + String.raw`  border: ${theme["QTabWidget::pane"].border};` +
+      "\n" + String.raw`  border: 0;` +
       "\n" + String.raw`}`
     ) : "";
   const tabWidgetTabBar = theme["QTabWidget::tab-bar"].left
@@ -52,8 +62,31 @@ export function transformToCss(theme: typeof DefaultCSS): string {
       "\n" + String.raw`  background-color: ${theme["QTabBar::tab:hover"]["background-color"]};` +
       "\n" + String.raw`}`
     ) : "";
+  const tabBarTabSelected = theme["QTabBar::tab:selected"]["background-color"]
+    ? (
+      "\n" + String.raw`QTabBar::tab:selected {` +
+      "\n" + String.raw`  background-color: ${theme["QTabBar::tab:selected"]["background-color"]};` +
+      "\n" + String.raw`}`
+    ) : "";
 
-  return "" +
+  const objectHandle = theme["QObject::handle"]
+    ? (
+      "\n" + String.raw`QObject::handle {` +
+      "\n" + String.raw`  margin: 2px;` +
+      "\n" + String.raw`  background: ${highlight};` +
+      "\n" + String.raw`}`
+    ) : "";
+
+  // we could just JSON#stringify both objects and compare them as strings... maybe?
+  const changed = "" !==
+    layout +
+    tabWidgetPane +
+    tabWidgetTabBar +
+    tabBarTab +
+    tabBarTabHover +
+    tabBarTabSelected +
+    objectHandle;
+  const result =
     ""   + String.raw`/* Main view */` +
     ""   + layout +
     "\n" + String.raw`/* */` + "\n" +
@@ -62,9 +95,14 @@ export function transformToCss(theme: typeof DefaultCSS): string {
     ""   + tabWidgetTabBar +
     ""   + tabBarTab +
     ""   + tabBarTabHover +
+    ""   + tabBarTabSelected +
     "\n" + String.raw`/* */` + "\n" +
     "\n" + String.raw`/* Buttons */` +
+    ""   + "" +
     "\n" + String.raw`/* */` + "\n" +
     "\n" + String.raw`/* Toolbar mover */` +
+    ""   + objectHandle +
     "\n" + String.raw`/* */`;
+
+  return { changed, result };
 }
