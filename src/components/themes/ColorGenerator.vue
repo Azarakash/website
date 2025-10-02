@@ -75,10 +75,22 @@ const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
       </p>
     </div>
     <div class="flex flex-col border border-[#7a7a7a]">
-      <div class="w-full p-2 text-sm leading-none" :style="{ background: colors.Base }">
+      <div
+        class="w-full p-2 text-sm leading-none"
+        :style="{
+          background: colors.Base,
+          color     : colors.Text,
+        }"
+      >
         日本語
       </div>
-      <div class="w-full p-2 text-sm leading-none" :style="{ background: colors.AlternateBase }">
+      <div
+        class="w-full p-2 text-sm leading-none"
+        :style="{
+          background: colors.AlternateBase,
+          color     : colors.Text,
+        }"
+      >
         Cute Engwish
       </div>
       <div
