@@ -94,7 +94,7 @@ const releases = computed((): GithubReleasesType => {
       <p class="select-text text-center text-balance text-5xl text-white font-bold sm:text-7xl">
         {{ translations?.Messages?.["pages.downloads.title"] }}
       </p>
-      <p class="select-text text-center text-balance text-lg text-gray-400 sm:text-2xl">
+      <p class="text-right-to-left select-text text-center text-balance text-lg text-gray-400 sm:text-2xl">
         {{ translations?.Messages?.["pages.downloads.description"]?.replace?.("%s", releases.Name) }}
       </p>
     </div>
