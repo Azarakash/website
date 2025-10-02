@@ -1,5 +1,45 @@
 import { DefaultCSS } from "@/constants/customization.ts";
 
+function createCssClass({
+  labels,
+  properties,
+  comparison,
+}: {
+  "labels"    : Array<string>;
+  "properties": Array<{
+    "name" : string;
+    "value": boolean | string | number;
+    "unit" : string;
+  }>;
+  "comparison": boolean | string | number;
+}): string {
+  // We don't care if the value is an empty string or zero
+  if (!comparison) {
+    return "";
+  }
+
+  const classSelectors = labels.map((label: string, _: number, array: Array<string>) => {
+    // eslint-disable-next-line unicorn/prefer-at
+    if (array[array.length - 1] === label) {
+      return "\n" + label;
+    }
+
+    return "\n" + label + ",";
+  });
+  const classFields: Array<string> = properties.map(({ name, value, unit }) => {
+    if (value === false) {
+      return "";
+    }
+
+    return "\n" + String.raw`  ${name}: ${value}${unit};`;
+  });
+
+  return "" +
+    ""   + classSelectors.join("") + " {" +
+    ""   + classFields.join("") +
+    "\n" + String.raw`}`;
+}
+
 export function transformToCss({
   theme,
   highlight,
@@ -10,63 +50,48 @@ export function transformToCss({
   "changed": boolean;
   "result" : string;
 } {
-  const layout = theme.LayoutBorder
-    ? (
-      "\n" + String.raw`#mainToolBar,` +
-      "\n" + String.raw`#instanceToolBar,` +
-      "\n" + String.raw`#statusBar,` +
-      "\n" + String.raw`#newsToolBar {` +
-      "\n" + String.raw`  border: 0;` +
-      "\n" + String.raw`}`
-    ) : "";
+  const layout = createCssClass({
+    "labels"    : ["#mainToolBar", "#instanceToolBar", "#statusBar", "#newsToolBar"],
+    "properties": [{ "name": "border", "value": 0, "unit": "" }],
+    "comparison": theme.LayoutBorder,
+  });
 
-  const tabWidgetPane = theme["QTabWidget::pane"].border
-    ? (
-      "\n" + String.raw`QTabWidget::pane {` +
-      "\n" + String.raw`  border: 0;` +
-      "\n" + String.raw`}`
-    ) : "";
-  const tabWidgetTabBar = theme["QTabWidget::tab-bar"].left
-    ? (
-      "\n" + String.raw`QTabWidget::tab-bar {` +
-      "\n" + String.raw`  left: ${theme["QTabWidget::tab-bar"].left}px;` +
-      "\n" + String.raw`}`
-    ) : "";
-  const tabBarTab = (
-    theme["QTabBar::tab"].border ||
-    theme["QTabBar::tab"].padding ||
-    theme["QTabBar::tab"]["margin-right"]
-  ) ? (
-      "\n" + String.raw`QTabBar::tab {` +
-      (
-        theme["QTabBar::tab"].border
-          ? ("\n" + String.raw`  border: 0;`)
-          : ""
-      ) +
-      (
-        theme["QTabBar::tab"].padding
-          ? ("\n" + String.raw`  padding: ${theme["QTabBar::tab"].padding};`)
-          : ""
-      ) +
-      (
-        theme["QTabBar::tab"]["margin-right"]
-          ? ("\n" + String.raw`  margin-right: ${theme["QTabBar::tab"]["margin-right"]}px;`)
-          : ""
-      ) +
-      "\n" + String.raw`}`
-    ) : "";
-  const tabBarTabHover = theme["QTabBar::tab:hover"]["background-color"]
-    ? (
-      "\n" + String.raw`QTabBar::tab:hover {` +
-      "\n" + String.raw`  background-color: ${theme["QTabBar::tab:hover"]["background-color"]};` +
-      "\n" + String.raw`}`
-    ) : "";
-  const tabBarTabSelected = theme["QTabBar::tab:selected"]["background-color"]
-    ? (
-      "\n" + String.raw`QTabBar::tab:selected {` +
-      "\n" + String.raw`  background-color: ${theme["QTabBar::tab:selected"]["background-color"]};` +
-      "\n" + String.raw`}`
-    ) : "";
+  const tabWidgetPane = createCssClass({
+    "labels"    : ["QTabWidget::pane"],
+    "properties": [{ "name": "border", "value": 0, "unit": "" }],
+    "comparison": theme["QTabWidget::pane"].border,
+  });
+  const tabWidgetTabBar = createCssClass({
+    "labels"    : ["QTabWidget::tab-bar"],
+    "properties": [{ "name": "left", "value": theme["QTabWidget::tab-bar"].left, "unit": "px" }],
+    "comparison": theme["QTabWidget::tab-bar"].left,
+  });
+  const tabBarTab = createCssClass({
+    "labels"    : ["QTabBar::tab"],
+    "properties": [
+      { "name": "border", "value": theme["QTabBar::tab"].border ? 0 : "", "unit": "" },
+      { "name": "padding", "value": theme["QTabBar::tab"].padding, "unit": "" },
+      { "name": "margin-right", "value": theme["QTabBar::tab"]["margin-right"], "unit": "px" },
+    ],
+    "comparison":
+      theme["QTabBar::tab"].border ||
+      theme["QTabBar::tab"].padding ||
+      theme["QTabBar::tab"]["margin-right"],
+  });
+  const tabBarTabHover = createCssClass({
+    "labels"    : ["QTabBar::tab:hover"],
+    "properties": [
+      { "name": "background-color", "value": theme["QTabBar::tab:hover"]["background-color"], "unit": "" },
+    ],
+    "comparison": theme["QTabBar::tab:hover"]["background-color"],
+  });
+  const tabBarTabSelected = createCssClass({
+    "labels"    : ["QTabBar::tab:selected"],
+    "properties": [
+      { "name": "background-color", "value": theme["QTabBar::tab:selected"]["background-color"], "unit": "" },
+    ],
+    "comparison": theme["QTabBar::tab:selected"]["background-color"],
+  });
 
   const toolButton = (
     theme["QToolButton"].border ||
@@ -87,7 +112,11 @@ export function transformToCss({
   const pushButtonPressed = theme["QPushButton:pressed"]["background-color"]
     ? ("") : "";
   const toolButtonOn = theme["QToolButton:on"]["background-color"]
-    ? ("") : "";
+    ? (
+      "\n" + String.raw`QTabBar::tab:selected {` +
+      "\n" + String.raw`  background-color: ${theme["QTabBar::tab:selected"]["background-color"]};` +
+      "\n" + String.raw`}`
+    ) : "";
 
   const objectHandle = theme["QObject::handle"]
     ? (
