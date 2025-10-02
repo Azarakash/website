@@ -43,7 +43,7 @@ export const DefaultCSS = {
   "QToolButton"    : {
     "border"          : false as boolean,
     "background-color": false as (false | string),
-    "padding"         : false as (false | number),
+    "padding"         : false as (false | string),
   },
   "QToolButton:on"     : { "background-color": false as (false | string) },
   "QToolButton:hover"  : { "background-color": false as (false | string) },
@@ -51,7 +51,7 @@ export const DefaultCSS = {
   "QPushButton"        : {
     "border"          : false as boolean,
     "background-color": false as (false | string),
-    "padding"         : false as (false | number),
+    "padding"         : false as (false | string),
   },
   "QPushButton:on"     : { "background-color": false as (false | string) },
   "QPushButton:hover"  : { "background-color": false as (false | string) },
@@ -59,7 +59,7 @@ export const DefaultCSS = {
   "QTabWidget::pane"   : { "border": false as boolean },
   "QTabWidget::tab-bar": { "left": false as (false | number) },
   "QTabBar::tab"       : {
-    "padding"     : false as (false | number),
+    "padding"     : false as (false | string),
     "margin-right": false as (false | number),
     "border"      : false as boolean,
   },

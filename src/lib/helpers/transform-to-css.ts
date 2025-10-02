@@ -93,38 +93,74 @@ export function transformToCss({
     "comparison": theme["QTabBar::tab:selected"]["background-color"],
   });
 
-  const toolButton = (
-    theme["QToolButton"].border ||
-    theme["QToolButton"].padding ||
-    theme["QToolButton"]["background-color"]
-  ) ? ("") : "";
-  const pushButton = (
-    theme["QPushButton"].border ||
-    theme["QPushButton"].padding ||
-    theme["QPushButton"]["background-color"]
-  ) ? ("") : "";
-  const toolButtonHover = theme["QToolButton:hover"]["background-color"]
-    ? ("") : "";
-  const pushButtonHover = theme["QPushButton:hover"]["background-color"]
-    ? ("") : "";
-  const toolButtonPressed = theme["QToolButton:pressed"]["background-color"]
-    ? ("") : "";
-  const pushButtonPressed = theme["QPushButton:pressed"]["background-color"]
-    ? ("") : "";
-  const toolButtonOn = theme["QToolButton:on"]["background-color"]
-    ? (
-      "\n" + String.raw`QTabBar::tab:selected {` +
-      "\n" + String.raw`  background-color: ${theme["QTabBar::tab:selected"]["background-color"]};` +
-      "\n" + String.raw`}`
-    ) : "";
+  const toolButton =  createCssClass({
+    "labels"    : ["QToolButton"],
+    "properties": [
+      { "name": "border", "value": theme["QToolButton"].border ? 0 : "", "unit": "" },
+      { "name": "padding", "value": theme["QToolButton"].padding, "unit": "" },
+      { "name": "background-color", "value": theme["QToolButton"]["background-color"], "unit": "" },
+    ],
+    "comparison":
+      theme["QToolButton"].border ||
+      theme["QToolButton"].padding ||
+      theme["QToolButton"]["background-color"],
+  });
+  const pushButton = createCssClass({
+    "labels"    : ["QPushButton"],
+    "properties": [
+      { "name": "border", "value": theme["QPushButton"].border ? 0 : "", "unit": "" },
+      { "name": "padding", "value": theme["QPushButton"].padding, "unit": "" },
+      { "name": "background-color", "value": theme["QPushButton"]["background-color"], "unit": "" },
+    ],
+    "comparison":
+      theme["QPushButton"].border ||
+      theme["QPushButton"].padding ||
+      theme["QPushButton"]["background-color"],
+  });
+  const toolButtonHover = createCssClass({
+    "labels"    : ["QToolButton:hover"],
+    "properties": [
+      { "name": "background-color", "value": theme["QToolButton:hover"]["background-color"], "unit": "" },
+    ],
+    "comparison": theme["QToolButton:hover"]["background-color"],
+  });
+  const pushButtonHover = createCssClass({
+    "labels"    : ["QPushButton:hover"],
+    "properties": [
+      { "name": "background-color", "value": theme["QPushButton:hover"]["background-color"], "unit": "" },
+    ],
+    "comparison": theme["QPushButton:hover"]["background-color"],
+  });
+  const toolButtonPressed = createCssClass({
+    "labels"    : ["QToolButton:pressed"],
+    "properties": [
+      { "name": "background-color", "value": theme["QToolButton:pressed"]["background-color"], "unit": "" },
+    ],
+    "comparison": theme["QToolButton:pressed"]["background-color"],
+  });
+  const pushButtonPressed = createCssClass({
+    "labels"    : ["QPushButton:pressed"],
+    "properties": [
+      { "name": "background-color", "value": theme["QPushButton:pressed"]["background-color"], "unit": "" },
+    ],
+    "comparison": theme["QPushButton:pressed"]["background-color"],
+  });
+  const toolButtonOn = createCssClass({
+    "labels"    : ["QToolButton:on"],
+    "properties": [
+      { "name": "background-color", "value": theme["QToolButton:on"]["background-color"], "unit": "" },
+    ],
+    "comparison": theme["QToolButton:on"]["background-color"],
+  });
 
-  const objectHandle = theme["QObject::handle"]
-    ? (
-      "\n" + String.raw`QObject::handle {` +
-      "\n" + String.raw`  margin: 2px;` +
-      "\n" + String.raw`  background: ${highlight};` +
-      "\n" + String.raw`}`
-    ) : "";
+  const objectHandle = createCssClass({
+    "labels"    : ["QObject::handle"],
+    "properties": [
+      { "name": "margin", "value": 2, "unit": "px" },
+      { "name": "background-color", "value": highlight, "unit": "" },
+    ],
+    "comparison": theme["QObject::handle"],
+  });
 
   // we could just JSON#stringify both objects and compare them as strings... maybe?
   const changed = "" !==
