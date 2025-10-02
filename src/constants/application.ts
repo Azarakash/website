@@ -14,6 +14,10 @@ export const DesktopTerminalContextKey = Symbol();
 export const TranslationsKey = "translations";
 export const AccentAnimationKey = "accent-animation";
 export const MobileSwipesKey = "mobile-swipes";
+export const ThemeGeneratorKeys = {
+  "Colors": "@theme-gen/colors",
+  "Styles": "@theme-gen/styles",
+};
 
 export const FeaturesSection: Array<{
   "Id"         : "auth" | "customization" | "prism" | "other";

@@ -14,8 +14,10 @@ const { code } = defineProps<{
 </script>
 
 <template>
-  <VueCodeHighlighterMulti
-    :key="code.key"
-    :code="code.data"
-  />
+  <div class="select-text">
+    <VueCodeHighlighterMulti
+      :key="code.key"
+      :code="code.data"
+    />
+  </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref } from "vue";
+import { computed, defineAsyncComponent, ref, watchEffect } from "vue";
 import { CustomizationTabs, DefaultColors, DefaultCSS } from "@/constants/customization.ts";
 import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
@@ -13,6 +13,9 @@ import "vue-code-highlighter/dist/style.css";
 import { transformToCss } from "@/lib/helpers/transform-to-css.ts";
 import HighlighterLoading from "@/components/themes/HighlighterLoading.vue";
 import { readImportedColors } from "@/lib/helpers/read-imported-colors.ts";
+import { ThemeGeneratorKeys } from "@/constants/application.ts";
+import { readThemeGeneratorColors } from "@/lib/helpers/read-theme-generator-colors.ts";
+import { readThemeGeneratorStyles } from "@/lib/helpers/read-theme-generator-styles.ts";
 
 const AsyncHighlighter = defineAsyncComponent({
   "loader"          : () => import("@/components/themes/AsyncHighlighter.vue"),
@@ -22,8 +25,8 @@ const AsyncHighlighter = defineAsyncComponent({
 const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
 const codeView = ref<boolean>(false);
 
-const colors = ref<typeof DefaultColors>({ ...DefaultColors });
-const styles = ref<typeof DefaultCSS>({ ...DefaultCSS });
+const colors = ref<typeof DefaultColors>({ ...DefaultColors, ...(readThemeGeneratorColors()) });
+const styles = ref<typeof DefaultCSS>({ ...DefaultCSS, ...(readThemeGeneratorStyles()) });
 
 const currentCode = computed(() => {
   return {
@@ -93,11 +96,24 @@ async function handleImport(event: Event) {
     return;
   }
 
+  if ("fadeAmount" in importedColors) {
+    delete importedColors["fadeAmount"];
+  }
+
+  if ("fadeColor" in importedColors) {
+    delete importedColors["fadeColor"];
+  }
+
   colors.value = {
     ...colors.value,
     ...importedColors,
   };
 }
+
+watchEffect(() => {
+  localStorage.setItem(ThemeGeneratorKeys.Colors, JSON.stringify(colors.value));
+  localStorage.setItem(ThemeGeneratorKeys.Styles, JSON.stringify(styles.value));
+});
 </script>
 
 <template>
@@ -135,24 +151,20 @@ async function handleImport(event: Event) {
         <div class="flex flex-wrap gap-4">
           <button
             v-for="item in [
-              { 'name': 'Export', 'icon': 'i-lucide-share-2', 'action': downloadTheme, 'active': false },
-              { 'name': 'Show JSON & CSS', 'icon': 'i-lucide-braces',
-                'action': toggleCodeView, 'active': codeView },
+              { 'name': 'Download', 'icon': 'i-lucide-download', 'action': downloadTheme },
+              { 'name': 'Show JSON & CSS', 'icon': 'i-lucide-braces', 'action': toggleCodeView },
             ]"
             :key="item.name"
             @click="item.action"
-            :class="[
-              'w-fit flex flex-nowrap items-center gap-4 rounded-md p-2 transition-[background-color]',
-              item.active && 'bg-catppuccin-800',
-            ]"
+            class="w-fit flex flex-nowrap items-center gap-4 rounded-md p-2 transition-[background-color] hover:bg-catppuccin-800"
           >
             <span :class="[item.icon, 'block size-6']" />
             <span class="block text-white font-medium">
               {{ item.name }}
             </span>
           </button>
-          <label for="import-colors" class="w-fit flex flex-nowrap cursor-pointer items-center gap-4 rounded-md p-2">
-            <span class="i-lucide-import block size-6" />
+          <label for="import-colors" class="w-fit flex flex-nowrap cursor-pointer items-center gap-4 rounded-md p-2 transition-[background-color] hover:bg-catppuccin-800">
+            <span class="i-lucide-paintbrush block size-6" />
             <span class="block text-white font-medium">
               Import Colors
             </span>
@@ -165,9 +177,7 @@ async function handleImport(event: Event) {
             class="hidden"
           />
         </div>
-        <div class="select-text">
-          <AsyncHighlighter v-if="codeView" :code="currentCode" />
-        </div>
+        <AsyncHighlighter v-if="codeView" :code="currentCode" />
         <ColorGenerator
           v-if="selected === 'colors'"
           :colors="colors"
