@@ -201,6 +201,8 @@ watchEffect(() => {
           :base="colors.Base"
           :tooltip-base="colors.ToolTipBase"
           :tooltip-text="colors.ToolTipText"
+          :borderless="styles.LayoutBorder"
+          :handlers="styles['QObject::handle']"
         />
         <SettingsThemed
           :highlight="colors.Highlight"

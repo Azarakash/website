@@ -11,6 +11,8 @@ const {
   base,
   tooltipBase,
   tooltipText,
+  borderless,
+  handlers,
 } = defineProps<{
   "highlight"      : string;
   "highlightedText": string;
@@ -21,6 +23,8 @@ const {
   "base"           : string;
   "tooltipBase"    : string;
   "tooltipText"    : string;
+  "borderless"     : boolean;
+  "handlers"       : boolean;
 }>();
 
 const buttons = {
@@ -42,15 +46,20 @@ const buttons = {
 </script>
 
 <template>
-  <div class="h-full min-w-84 w-full flex flex-col border-x border-[#7a7a7a]">
+  <div class="h-full min-w-84 w-full flex flex-col border border-[#7a7a7a]">
     <div
-      class="flex flex-nowrap items-center justify-between border-t border-[#7a7a7a]"
+      class="flex flex-nowrap items-center justify-between"
       :style="{
         background: background,
         padding   : '4px',
       }"
     >
       <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap">
+        <div
+          v-if="handlers"
+          class="h-6 w-1 shrink-0 bg-red"
+          :style="{ background: highlight }"
+        />
         <div
           v-for="button in buttons.menu"
           :key="button.name"
@@ -86,8 +95,11 @@ const buttons = {
       </div>
     </div>
     <div
-      class="flex flex-nowrap border-t border-[#7a7a7a]"
-      :style="{ background: base }"
+      class="flex flex-nowrap border-t"
+      :style="{
+        background : base,
+        borderColor: borderless ? background : '#7a7a7a',
+      }"
     >
       <div class="w-full flex flex-col gap-2 p-1">
         <div class="flex flex-nowrap items-center gap-1">
@@ -130,9 +142,17 @@ const buttons = {
         </div>
       </div>
       <div
-        class="h-full w-39 flex flex-col items-center border-l border-[#7a7a7a]"
-        :style="{ background: background }"
+        class="h-full w-39 flex flex-col items-center border-l"
+        :style="{
+          background : background,
+          borderColor: borderless ? 'transparent' : '#7a7a7a',
+        }"
       >
+        <div
+          v-if="handlers"
+          class="mt-1 h-1 w-[calc(100%-16px)] shrink-0 bg-red"
+          :style="{ background: highlight }"
+        />
         <Image class-names="size-20 mt-2" src="/assets/grass.svg" alt="Grass SVG icon" />
         <div
           class="py-2 text-xs leading-none"
@@ -160,10 +180,18 @@ const buttons = {
       </div>
     </div>
     <div
-      class="flex flex-nowrap justify-between border-t border-[#7a7a7a] p-1"
-      :style="{ background: background }"
+      class="flex flex-nowrap justify-between border-t p-1"
+      :style="{
+        background : background,
+        borderColor: borderless ? 'transparent' : '#7a7a7a',
+      }"
     >
       <div class="flex flex-nowrap items-center gap-1">
+        <div
+          v-if="handlers"
+          class="mr-1 h-5 w-1 shrink-0 bg-red"
+          :style="{ background: highlight }"
+        />
         <div class="i-fluent-news-16-regular" />
         <p
           class="select-text text-sm"
@@ -183,8 +211,11 @@ const buttons = {
       </div>
     </div>
     <div
-      class="flex flex-nowrap justify-between border-y border-[#7a7a7a] pt-1"
-      :style="{ background: background }"
+      class="flex flex-nowrap justify-between border-t pt-1"
+      :style="{
+        background : background,
+        borderColor: borderless ? 'transparent' : '#7a7a7a',
+      }"
     >
       <p
         class="select-text px-1 text-sm"
