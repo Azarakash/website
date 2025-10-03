@@ -1,21 +1,42 @@
 <script setup lang="ts">
+import type { DefaultCSS } from "@/constants/customization.ts";
+
 const {
-  layoutBorder,
-  toggleLayoutBorder,
-  accentHandlers,
-  toggleAccentHandlers,
-  tabWidgetPane,
-  toggleTabWidgetPane,
+  styles,
+  modifyStyles,
   resetStyles,
 } = defineProps<{
-  "layoutBorder"        : boolean;
-  "toggleLayoutBorder"  : () => void;
-  "accentHandlers"      : boolean;
-  "toggleAccentHandlers": () => void;
-  "tabWidgetPane"       : boolean;
-  "toggleTabWidgetPane" : () => void;
-  "resetStyles"         : () => void;
+  "styles"      : typeof DefaultCSS;
+  "modifyStyles": (newStyles: typeof DefaultCSS) => void;
+  "resetStyles" : () => void;
 }>();
+
+function toggleLayoutBorder() {
+  modifyStyles({
+    ...styles,
+    "LayoutBorder": !styles.LayoutBorder,
+  });
+}
+function toggleAccentHandlers() {
+  modifyStyles({
+    ...styles,
+    "QObject::handle": !styles["QObject::handle"],
+  });
+}
+function toggleSettingsViewStyles() {
+  modifyStyles({
+    ...styles,
+    "QTabWidget::tab-bar": {
+      ...styles["QTabWidget::tab-bar"],
+      // 'true' means custom, so the value should be '? 8 : 0', but we are inverting it
+      "left": styles["QTabWidget::pane"].border ? 0 : 8,
+    },
+    "QTabWidget::pane": {
+      ...styles["QTabWidget::pane"],
+      "border": !styles["QTabWidget::pane"].border,
+    },
+  });
+}
 </script>
 
 <template>
@@ -30,7 +51,7 @@ const {
       <input
         id="layoutBorder"
         type="checkbox"
-        :checked="layoutBorder"
+        :checked="styles.LayoutBorder"
         @input="toggleLayoutBorder"
       />
       <label for="layoutBorder">
@@ -41,7 +62,7 @@ const {
       <input
         id="accentHandlers"
         type="checkbox"
-        :checked="accentHandlers"
+        :checked="styles['QObject::handle']"
         @input="toggleAccentHandlers"
       />
       <label for="accentHandlers">
@@ -52,8 +73,8 @@ const {
       <input
         id="tabWidgetPane"
         type="checkbox"
-        :checked="tabWidgetPane"
-        @input="toggleTabWidgetPane"
+        :checked="styles['QTabWidget::pane'].border"
+        @input="toggleSettingsViewStyles"
       />
       <label for="tabWidgetPane">
         Reset tab widgets wrapper style

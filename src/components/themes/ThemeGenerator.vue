@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watchEffect } from "vue";
+import { computed, ref, shallowRef, watchEffect } from "vue";
 import { CustomizationTabs, DefaultColors, DefaultCSS } from "@/constants/customization.ts";
 import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
@@ -19,7 +19,7 @@ const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
 const codeView = ref<boolean>(false);
 
 const colors = ref<typeof DefaultColors>({ ...DefaultColors, ...(readThemeGeneratorColors()) });
-const styles = ref<typeof DefaultCSS>({ ...DefaultCSS, ...(readThemeGeneratorStyles()) });
+const styles = shallowRef<typeof DefaultCSS>({ ...DefaultCSS, ...(readThemeGeneratorStyles()) });
 
 const currentCode = computed(() => {
   const computedStyles = transformToCss({ "theme": styles.value, "highlight": colors.value.Highlight });
@@ -116,10 +116,8 @@ async function handleImport(event: Event) {
   };
 }
 
-function toggleSettingsViewStyles() {
-  // 'true' means custom, so the value should be '? 8 : 0', but we are inverting it
-  styles.value["QTabWidget::tab-bar"].left = styles.value["QTabWidget::pane"].border ? 0 : 8;
-  styles.value["QTabWidget::pane"].border = !styles.value["QTabWidget::pane"].border;
+function modifyStyles(newStyles: typeof DefaultCSS) {
+  styles.value = newStyles;
 }
 
 watchEffect(() => {
@@ -198,16 +196,14 @@ watchEffect(() => {
         />
         <GeneralStyler
           v-else-if="selected === 'general'"
-          :layout-border="styles.LayoutBorder"
-          :toggle-layout-border="() => styles.LayoutBorder = !styles.LayoutBorder"
-          :accent-handlers="styles['QObject::handle']"
-          :toggle-accent-handlers="() => styles['QObject::handle'] = !styles['QObject::handle']"
-          :tab-widget-pane="styles['QTabWidget::pane'].border"
-          :toggle-tab-widget-pane="toggleSettingsViewStyles"
+          :styles="styles"
+          :modify-styles="modifyStyles"
           :reset-styles="resetStyles"
         />
         <ButtonsStyler
           v-else
+          :styles="styles"
+          :modify-styles="modifyStyles"
           :reset-styles="resetStyles"
         />
         <LauncherThemed
