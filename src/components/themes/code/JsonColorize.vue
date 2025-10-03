@@ -6,14 +6,14 @@ const { code } = defineProps<{
   "code": string;
 }>();
 const parsed = computed((): {
-  "colors" : typeof DefaultColors;
+  "colors" : typeof DefaultColors & Record<"fadeAmount", number> & Record<"fadeColor", string>;
   "name"   : string;
   "widgets": string;
 } => {
   try {
     // we already validated everything before this point
     return JSON.parse(code) as ({
-      "colors" : typeof DefaultColors;
+      "colors" : typeof DefaultColors & Record<"fadeAmount", number> & Record<"fadeColor", string>;
       "name"   : string;
       "widgets": string;
     });
@@ -21,7 +21,7 @@ const parsed = computed((): {
     console.error("Couldn't parse the provided code in JsonColorize.vue. Really?", error);
 
     return {
-      "colors" : DefaultColors,
+      "colors" : { ...DefaultColors, "fadeAmount": 0.5, "fadeColor": "#000000" },
       "name"   : "A Custom Theme <0000>",
       "widgets": "Fusion",
     };
@@ -68,6 +68,7 @@ const parsed = computed((): {
       <span v-if="index !== Object.keys(parsed.colors).length - 1">
         {{ "," }}
       </span>
+      <span v-if="typeof value === 'string'" class="inline-block size-3 border ml-2" :style="{ background: value }" />
     </div>
     <div class="whitespace-pre-wrap">
       <span class="text-[#fab370]">
