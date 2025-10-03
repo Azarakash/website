@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DefaultCSS } from "@/constants/customization.ts";
+import { computed, type UnwrapRef } from "vue";
 
 const {
   styles,
@@ -10,6 +11,25 @@ const {
   "modifyStyles": (newStyles: typeof DefaultCSS) => void;
   "resetStyles" : () => void;
 }>();
+
+const styleResetButtons = computed(() => {
+  return [
+    { "label": "tool button", "selector": "QToolButton", "value": styles["QToolButton"].border },
+    { "label": "push button", "selector": "QPushButton", "value": styles["QPushButton"].border },
+    { "label": "tab button", "selector": "QTabBar::tab", "value": styles["QTabBar::tab"].border },
+  ] as const;
+});
+
+// Unwraps 'ComputedRef<T>' and gets a constant array
+function toggleButton(selector: UnwrapRef<typeof styleResetButtons>[number]["selector"]) {
+  modifyStyles({
+    ...styles,
+    [selector]: {
+      ...styles[selector],
+      "border": !styles[selector].border,
+    },
+  });
+}
 </script>
 
 <template>
@@ -20,15 +40,19 @@ const {
         Reset Styles
       </span>
     </button>
-    <div class="flex flex-nowrap items-center">
+    <div
+      v-for="styleResetButton in styleResetButtons"
+      :key="styleResetButton.selector"
+      class="flex flex-nowrap items-center"
+    >
       <input
-        id="layoutBorder"
         type="checkbox"
-        :checked="styles.QToolButton.border"
-        @input="toggleLayoutBorder"
+        :id="`${styleResetButton.selector}Border`"
+        :checked="styleResetButton.value"
+        @input="() => toggleButton(styleResetButton.selector)"
       />
-      <label for="layoutBorder">
-        Remove main window borders
+      <label :for="`${styleResetButton.selector}Border`">
+        Reset {{ styleResetButton.label }} style
       </label>
     </div>
   </div>
