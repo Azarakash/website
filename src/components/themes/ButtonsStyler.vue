@@ -275,7 +275,7 @@ function getPushButtonBackground(inputBackground: false | string, borderless: bo
             {{ numberInput.selector }}
           </span>
           <span>{{ " " }}</span>
-          <span>gap between</span>
+          <span>{{ numberInput.text }}</span>
         </label>
       </div>
     </template>
