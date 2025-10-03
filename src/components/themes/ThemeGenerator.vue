@@ -72,6 +72,13 @@ function resetColors() {
 
   colors.value = { ...DefaultColors };
 }
+function resetStyles() {
+  if (!confirm("Are you sure about resetting current styles?")) {
+    return;
+  }
+
+  styles.value = { ...DefaultCSS };
+}
 
 function downloadTheme() {
   const zip = new JSZip;
@@ -189,8 +196,18 @@ watchEffect(() => {
           :set-color="selectColor"
           :reset-colors="resetColors"
         />
-        <GeneralStyler v-else-if="selected === 'general'" />
-        <ButtonsStyler v-else />
+        <GeneralStyler
+          v-else-if="selected === 'general'"
+          :layout-border="styles.LayoutBorder"
+          :toggle-layout-border="() => styles.LayoutBorder = !styles.LayoutBorder"
+          :accent-handlers="styles['QObject::handle']"
+          :toggle-accent-handlers="() => styles['QObject::handle'] = !styles['QObject::handle']"
+          :reset-styles="resetStyles"
+        />
+        <ButtonsStyler
+          v-else
+          :reset-styles="resetStyles"
+        />
         <LauncherThemed
           :highlight="colors.Highlight"
           :highlighted-text="colors.HighlightedText"

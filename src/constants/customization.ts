@@ -19,7 +19,7 @@ export const DefaultColors = {
   "AlternateBase"  : "#2b2b2b",
   "Base"           : "#242424",
   "BrightText"     : "#e0e031", // not sure what this does. maybe accessibility thing?
-  "Button"         : "#303030",
+  "Button"         : "#3c3c3c",
   "ButtonText"     : "#ffffff",
   "Highlight"      : "#96db59",
   "HighlightedText": "#000000",
