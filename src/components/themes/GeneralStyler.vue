@@ -34,7 +34,7 @@ const {
         @input="toggleLayoutBorder"
       />
       <label for="layoutBorder">
-        Toggle
+        Remove main window borders
       </label>
     </div>
     <div class="flex flex-nowrap items-center">
@@ -45,7 +45,7 @@ const {
         @input="toggleAccentHandlers"
       />
       <label for="accentHandlers">
-        Toggle
+        Make toolbar handlers accent colored
       </label>
     </div>
     <div class="flex flex-nowrap items-center">
@@ -56,7 +56,7 @@ const {
         @input="toggleTabWidgetPane"
       />
       <label for="tabWidgetPane">
-        Toggle
+        Reset tab widgets wrapper style
       </label>
     </div>
   </div>
