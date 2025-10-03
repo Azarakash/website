@@ -116,6 +116,12 @@ async function handleImport(event: Event) {
   };
 }
 
+function toggleSettingsViewStyles() {
+  // 'true' means custom, so the value should be '? 8 : 0', but we are inverting it
+  styles.value["QTabWidget::tab-bar"].left = styles.value["QTabWidget::pane"].border ? 0 : 8;
+  styles.value["QTabWidget::pane"].border = !styles.value["QTabWidget::pane"].border;
+}
+
 watchEffect(() => {
   localStorage.setItem(ThemeGeneratorKeys.Colors, JSON.stringify(colors.value));
   localStorage.setItem(ThemeGeneratorKeys.Styles, JSON.stringify(styles.value));
@@ -196,6 +202,8 @@ watchEffect(() => {
           :toggle-layout-border="() => styles.LayoutBorder = !styles.LayoutBorder"
           :accent-handlers="styles['QObject::handle']"
           :toggle-accent-handlers="() => styles['QObject::handle'] = !styles['QObject::handle']"
+          :tab-widget-pane="styles['QTabWidget::pane'].border"
+          :toggle-tab-widget-pane="toggleSettingsViewStyles"
           :reset-styles="resetStyles"
         />
         <ButtonsStyler
@@ -226,6 +234,7 @@ watchEffect(() => {
           :background-text="colors.WindowText"
           :text="colors.Text"
           :base="colors.Base"
+          :tab-widget-pane="styles['QTabWidget::pane'].border"
         />
       </div>
     </div>

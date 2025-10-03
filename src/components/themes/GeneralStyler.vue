@@ -4,12 +4,16 @@ const {
   toggleLayoutBorder,
   accentHandlers,
   toggleAccentHandlers,
+  tabWidgetPane,
+  toggleTabWidgetPane,
   resetStyles,
 } = defineProps<{
   "layoutBorder"        : boolean;
   "toggleLayoutBorder"  : () => void;
   "accentHandlers"      : boolean;
   "toggleAccentHandlers": () => void;
+  "tabWidgetPane"       : boolean;
+  "toggleTabWidgetPane" : () => void;
   "resetStyles"         : () => void;
 }>();
 </script>
@@ -38,6 +42,17 @@ const {
         @input="toggleAccentHandlers"
       />
       <label for="accentHandlers">
+        Toggle
+      </label>
+    </div>
+    <div class="flex flex-nowrap items-center">
+      <input
+        id="tabWidgetPane"
+        type="checkbox"
+        :checked="tabWidgetPane"
+        @input="toggleTabWidgetPane"
+      />
+      <label for="tabWidgetPane">
         Toggle
       </label>
     </div>

@@ -10,14 +10,16 @@ const {
   text,
   backgroundText,
   base,
+  tabWidgetPane,
 } = defineProps<{
-  "highlight"     : string;
-  "highlightText" : string;
-  "background"    : string;
-  "buttonColor"   : string;
-  "text"          : string;
-  "backgroundText": string;
-  "base"          : string;
+  "highlight"        : string;
+  "highlightText"    : string;
+  "background"       : string;
+  "buttonColor"      : string;
+  "text"             : string;
+  "backgroundText"   : string;
+  "base"             : string;
+  "tabWidgetPane"    : boolean;
 }>();
 
 const catPackStore = useCatPackState();
@@ -103,10 +105,11 @@ const itemsThemesSettings = [
           </div>
         </div>
         <div
-          class="h-full w-full flex flex-col border-x-2 border-b-2 rounded-sm p-2"
+          class="h-full w-full flex flex-col border-x-2 border-b-2 rounded-sm"
           :style="{
-            background : buttonColor,
-            borderColor: base,
+            background : tabWidgetPane ? 'transparent' : buttonColor,
+            padding    : tabWidgetPane ? '8px 0' : '8px',
+            borderColor: tabWidgetPane ? 'transparent' : base,
           }"
         >
           <p
@@ -116,7 +119,7 @@ const itemsThemesSettings = [
             Instance view sorting mode
           </p>
           <div
-            class="grid cols-1 border border-black rounded-md px-2 py-3 sm:cols-2"
+            class="grid cols-1 border rounded-sm px-2 py-3 sm:cols-2 border-[theme(colors.white/.1)]"
           >
             <div
               v-for="item in ['By last launched', 'By name']"
@@ -140,7 +143,7 @@ const itemsThemesSettings = [
             Theme
           </p>
           <div
-            class="flex flex-col gap-1 border border-black rounded-md px-2 py-3 sm:cols-2"
+            class="flex flex-col gap-1 border rounded-sm px-2 py-3 sm:cols-2 border-[theme(colors.white/.1)]"
           >
             <div
               v-for="item in itemsThemesSettings"
@@ -176,7 +179,7 @@ const itemsThemesSettings = [
             Cat
           </p>
           <div
-            class="border border-black rounded-md px-2 py-2 sm:cols-2"
+            class="border rounded-sm px-2 py-2 sm:cols-2 border-[theme(colors.white/.1)]"
           >
             <div class="flex flex-nowrap items-center justify-between">
               <p
@@ -217,7 +220,7 @@ const itemsThemesSettings = [
             Tools
           </p>
           <div
-            class="border border-black rounded-md px-2 py-3 sm:cols-2"
+            class="border rounded-sm px-2 py-3 sm:cols-2 border-[theme(colors.white/.1)]"
           >
             <div class="flex flex-nowrap items-center gap-1">
               <div class="size-4 bg-black" />
