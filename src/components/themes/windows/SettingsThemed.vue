@@ -11,6 +11,9 @@ const {
   backgroundText,
   base,
   tabWidgetPane,
+  tabBorderless,
+  tabPadding,
+  tabGap,
 } = defineProps<{
   "highlight"     : string;
   "highlightText" : string;
@@ -20,6 +23,9 @@ const {
   "backgroundText": string;
   "base"          : string;
   "tabWidgetPane" : boolean;
+  "tabBorderless" : boolean;
+  "tabPadding"    : false | string;
+  "tabGap"        : false | number;
 }>();
 
 const catPackStore = useCatPackState();
@@ -90,15 +96,18 @@ const itemsThemesSettings = [
             v-for="name in ['Features', 'User Interface', 'Console']"
             :key="name"
             :class="[
-              'text-sm p-2 leading-none rounded-t-sm text-xs',
-              name === 'User Interface'
+              'text-sm leading-none text-xs',
+              name === 'User Interface' && !tabBorderless
                 ? 'h-[32px] border-x-2 border-t-2'
                 : 'h-[30px] border-b-2 opacity-80',
             ]"
             :style="{
-              background : buttonColor,
-              borderColor: background,
-              color      : backgroundText,
+              background  : tabBorderless ? 'transparent' : buttonColor,
+              borderColor : tabBorderless ? 'transparent' : background,
+              borderRadius: tabBorderless ? 0 : '2px 2px 0 0',
+              color       : backgroundText,
+              marginRight : tabGap || 0,
+              padding     : tabPadding || '8px',
             }"
           >
             {{ name }}
