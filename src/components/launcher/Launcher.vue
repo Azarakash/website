@@ -73,12 +73,7 @@ provide<ContextLauncherType>(LauncherContextKey, {
       @contextmenu.prevent
       :class="[
         'w-full rounded-md drop-shadow-[0_25px_25px_rgba(0,0,0,0.5)] box-border',
-        /* Class starts */
-        '[background:linear-gradient(45deg,theme(colors.catppuccin.800))_padding-box,conic-gradient(from_' +
-        'var(--border-angle),theme(colors.catppuccin.800/.48)_60%,_theme(colors.violet.300)_72%,_theme(' +
-        'colors.violet.100)_80%,_theme(colors.violet.300)_88%,_theme(colors.catppuccin.800/.48))_border-box]',
-        /* Class ends */
-        'border-2 border-transparent animate-border transition duration-300',
+        'border-2 border-transparent transition duration-300',
         maximized
           ? '!w-auto fixed top-4 left-4 right-4 z-[6000] select-none'
           : 'relative',
