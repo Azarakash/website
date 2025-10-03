@@ -27,12 +27,18 @@ const lines = computed(() => code.split("\n"));
         <span class="text-[#94e2d5]">
           {{ ":" }}
         </span>
+        <!-- Property value -->
         <span class="text-[#fab387]">
           {{ line.split(":")[1].split(";")[0] }}
         </span>
         <span>
           {{ ";" }}
         </span>
+        <span
+          v-if="line.split(':')[1].split(';')[0].startsWith(' #')"
+          class="ml-2 inline-block size-3 border align-sub"
+          :style="{ background: line.split(':')[1].split(';')[0] }"
+        ></span>
       </template>
       <!-- Selectors properties end -->
       <span v-else-if="line === '}'" class="text-[#f38ba8]">

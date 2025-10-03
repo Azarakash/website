@@ -68,7 +68,7 @@ const parsed = computed((): {
       <span v-if="index !== Object.keys(parsed.colors).length - 1">
         {{ "," }}
       </span>
-      <span v-if="typeof value === 'string'" class="inline-block size-3 border ml-2" :style="{ background: value }" />
+      <span v-if="typeof value === 'string'" class="ml-2 inline-block size-3 border align-sub" :style="{ background: value }" />
     </div>
     <div class="whitespace-pre-wrap">
       <span class="text-[#fab370]">
