@@ -31,7 +31,7 @@ const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
 </script>
 
 <template>
-  <div class="grid cols-1 w-full gap-0 gap-2 lg:cols-3 sm:cols-2">
+  <div class="grid cols-1 w-full gap-2 lg:cols-3 sm:cols-2">
     <button @click="resetColors" class="w-fit flex flex-nowrap items-center gap-4 rounded-md py-2 pl-2 pr-3 transition-[background-color] hover:bg-catppuccin-800">
       <span class="i-lucide-rotate-ccw block size-6 text-gray-400" />
       <span class="block text-gray-400 font-medium">

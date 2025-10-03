@@ -67,7 +67,7 @@ function resetColors() {
   colors.value = { ...DefaultColors };
 }
 function resetStyles() {
-  if (!confirm("Are you sure about resetting current styles?")) {
+  if (!confirm("Are you sure about resetting all CSS styles (not colors)?")) {
     return;
   }
 
@@ -203,6 +203,7 @@ watchEffect(() => {
         <ButtonsStyler
           v-else
           :styles="styles"
+          :background="colors.Window"
           :modify-styles="modifyStyles"
           :reset-styles="resetStyles"
         />
