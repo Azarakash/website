@@ -26,7 +26,7 @@ const {
   "tabWidgetPane" : boolean;
   "tabBackground" : false | string;
   "tabBorderless" : boolean;
-  "tabPadding"    : false | string;
+  "tabPadding"    : false | number;
   "tabGap"        : false | number;
 }>();
 

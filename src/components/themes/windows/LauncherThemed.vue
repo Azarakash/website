@@ -29,7 +29,7 @@ const {
   "borderless"      : boolean;
   "handlers"        : boolean;
   "buttonBorderless": boolean;
-  "buttonPadding"   : false | string;
+  "buttonPadding"   : false | number;
   "buttonBackground": false | string;
 }>();
 
@@ -55,7 +55,7 @@ function getToolBarButtonBackground(name: string, inputBackground: false | strin
     return "transparent";
   }
 
-  if (inputBorderless) {
+  if (inputBorderless && inputBackground) {
     return inputBackground;
   }
 
@@ -93,7 +93,7 @@ function getToolBarButtonBorderColor(name: string, buttonBorderless: boolean) {
             background  : getToolBarButtonBackground(button.name, buttonBackground, buttonBorderless),
             borderColor : getToolBarButtonBorderColor(button.name, buttonBorderless),
             borderRadius: buttonBorderless ? 0 : '2px',
-            padding     : buttonPadding || '2px 4px',
+            padding     : `${buttonPadding}px` || '4px',
           }"
         >
           <div :class="['size-6', button.icon]" />

@@ -5,6 +5,7 @@ function createCssClass({
   labels,
   properties,
   comparison,
+  earlyReturn,
 }: {
   "labels"    : Array<string>;
   "properties": Array<{
@@ -12,10 +13,11 @@ function createCssClass({
     "value": boolean | string | number;
     "unit" : string;
   }>;
-  "comparison": boolean | string | number;
+  "comparison"  : boolean | string | number;
+  "earlyReturn"?: boolean;
 }): string {
   // We don't care if the value is an empty string or zero
-  if (!comparison) {
+  if (!comparison || earlyReturn) {
     return "";
   }
 
@@ -82,20 +84,23 @@ export function transformToCss({
       theme["QTabBar::tab"].border ||
       theme["QTabBar::tab"].padding ||
       theme["QTabBar::tab"]["margin-right"],
+    "earlyReturn": !theme["QTabBar::tab"].border,
   });
   const tabBarTabHover = createCssClass({
     "labels"    : ["QTabBar::tab:hover"],
     "properties": [
       { "name": "background-color", "value": theme["QTabBar::tab:hover"]["background-color"], "unit": "" },
     ],
-    "comparison": theme["QTabBar::tab:hover"]["background-color"],
+    "comparison" : theme["QTabBar::tab:hover"]["background-color"],
+    "earlyReturn": !theme["QTabBar::tab"].border,
   });
   const tabBarTabSelected = createCssClass({
     "labels"    : ["QTabBar::tab:selected"],
     "properties": [
       { "name": "background-color", "value": theme["QTabBar::tab:selected"]["background-color"], "unit": "" },
     ],
-    "comparison": theme["QTabBar::tab:selected"]["background-color"],
+    "comparison" : theme["QTabBar::tab:selected"]["background-color"],
+    "earlyReturn": !theme["QTabBar::tab"].border,
   });
 
   const toolButton =  createCssClass({
@@ -109,6 +114,7 @@ export function transformToCss({
       theme["QToolButton"].border ||
       theme["QToolButton"].padding ||
       theme["QToolButton"]["background-color"],
+    "earlyReturn": !theme["QToolButton"].border,
   });
   const pushButton = createCssClass({
     "labels"    : ["QPushButton"],
@@ -121,41 +127,47 @@ export function transformToCss({
       theme["QPushButton"].border ||
       theme["QPushButton"].padding ||
       theme["QPushButton"]["background-color"],
+    "earlyReturn": !theme["QPushButton"].border,
   });
   const toolButtonHover = createCssClass({
     "labels"    : ["QToolButton:hover"],
     "properties": [
       { "name": "background-color", "value": theme["QToolButton:hover"]["background-color"], "unit": "" },
     ],
-    "comparison": theme["QToolButton:hover"]["background-color"],
+    "comparison" : theme["QToolButton:hover"]["background-color"],
+    "earlyReturn": !theme["QToolButton"].border,
   });
   const pushButtonHover = createCssClass({
     "labels"    : ["QPushButton:hover"],
     "properties": [
       { "name": "background-color", "value": theme["QPushButton:hover"]["background-color"], "unit": "" },
     ],
-    "comparison": theme["QPushButton:hover"]["background-color"],
+    "comparison" : theme["QPushButton:hover"]["background-color"],
+    "earlyReturn": !theme["QPushButton"].border,
   });
   const toolButtonPressed = createCssClass({
     "labels"    : ["QToolButton:pressed"],
     "properties": [
       { "name": "background-color", "value": theme["QToolButton:pressed"]["background-color"], "unit": "" },
     ],
-    "comparison": theme["QToolButton:pressed"]["background-color"],
+    "comparison" : theme["QToolButton:pressed"]["background-color"],
+    "earlyReturn": !theme["QToolButton"].border,
   });
   const pushButtonPressed = createCssClass({
     "labels"    : ["QPushButton:pressed"],
     "properties": [
       { "name": "background-color", "value": theme["QPushButton:pressed"]["background-color"], "unit": "" },
     ],
-    "comparison": theme["QPushButton:pressed"]["background-color"],
+    "comparison" : theme["QPushButton:pressed"]["background-color"],
+    "earlyReturn": !theme["QPushButton"].border,
   });
   const toolButtonOn = createCssClass({
     "labels"    : ["QToolButton:on"],
     "properties": [
       { "name": "background-color", "value": theme["QToolButton:on"]["background-color"], "unit": "" },
     ],
-    "comparison": theme["QToolButton:on"]["background-color"],
+    "comparison" : theme["QToolButton:on"]["background-color"],
+    "earlyReturn": !theme["QToolButton"].border,
   });
 
   const objectHandle = createCssClass({
@@ -175,6 +187,13 @@ export function transformToCss({
     tabBarTab +
     tabBarTabHover +
     tabBarTabSelected +
+    toolButton +
+    pushButton +
+    toolButtonHover +
+    pushButtonHover +
+    toolButtonPressed +
+    pushButtonPressed +
+    toolButtonOn +
     objectHandle;
   const result =
     ""   + String.raw`/* Main view */` +
