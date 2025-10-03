@@ -6,7 +6,7 @@ import CssColorize from "@/components/themes/code/CssColorize.vue";
 
 const { code } = defineProps<{
   "code": {
-    "key" : string;
+    "key" : number;
     "data": Array<{
       "lang" : string;
       "title": string;

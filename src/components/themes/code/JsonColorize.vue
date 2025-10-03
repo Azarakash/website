@@ -31,7 +31,7 @@ const parsed = computed((): {
 
 <template>
   <div class="select-text p-4 text-sm text-[#9399b2] font-mono">
-    <div class="text-[#e68ba8]">
+    <div class="text-[#f38ba8]">
       <span>{</span>
     </div>
     <div class="whitespace-pre-wrap">
@@ -109,7 +109,7 @@ const parsed = computed((): {
         {{ " " + JSON.stringify(parsed.widgets) }}
       </span>
     </div>
-    <div class="text-[#e68ba8]">
+    <div class="text-[#f38ba8]">
       <span>}</span>
     </div>
   </div>
