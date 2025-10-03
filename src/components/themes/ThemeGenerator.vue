@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, ref, watchEffect } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import { CustomizationTabs, DefaultColors, DefaultCSS } from "@/constants/customization.ts";
 import ColorGenerator from "@/components/themes/ColorGenerator.vue";
 import GeneralStyler from "@/components/themes/GeneralStyler.vue";
@@ -9,16 +9,11 @@ import SettingsThemed from "@/components/themes/windows/SettingsThemed.vue";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { transformToCss } from "@/lib/helpers/transform-to-css.ts";
-import HighlighterLoading from "@/components/themes/HighlighterLoading.vue";
 import { readImportedColors } from "@/lib/helpers/read-imported-colors.ts";
 import { ThemeGeneratorKeys } from "@/constants/application.ts";
 import { readThemeGeneratorColors } from "@/lib/helpers/read-theme-generator-colors.ts";
 import { readThemeGeneratorStyles } from "@/lib/helpers/read-theme-generator-styles.ts";
-
-const AsyncHighlighter = defineAsyncComponent({
-  "loader"          : () => import("@/components/themes/AsyncHighlighter.vue"),
-  "loadingComponent": HighlighterLoading,
-});
+import Highlighter from "@/components/themes/code/Highlighter.vue";
 
 const selected = ref<typeof CustomizationTabs[number]["Key"]>("colors");
 const codeView = ref<boolean>(false);
@@ -188,7 +183,7 @@ watchEffect(() => {
             class="hidden"
           />
         </div>
-        <AsyncHighlighter v-if="codeView" :code="currentCode" />
+        <Highlighter v-if="codeView" :code="currentCode" />
         <ColorGenerator
           v-if="selected === 'colors'"
           :colors="colors"
