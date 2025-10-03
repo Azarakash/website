@@ -1,4 +1,5 @@
 import { DefaultCSS } from "@/constants/customization.ts";
+import { HEXToRGBA } from "@/lib/helpers/hex-to-rgba.ts";
 
 function createCssClass({
   labels,
@@ -50,6 +51,7 @@ export function transformToCss({
   "changed": boolean;
   "result" : string;
 } {
+  const highlightRGBA = HEXToRGBA({ "hex": highlight });
   const layout = createCssClass({
     "labels"    : ["#mainToolBar", "#instanceToolBar", "#statusBar", "#newsToolBar"],
     "properties": [{ "name": "border", "value": 0, "unit": "" }],
@@ -157,7 +159,7 @@ export function transformToCss({
     "labels"    : ["QObject::handle"],
     "properties": [
       { "name": "margin", "value": 2, "unit": "px" },
-      { "name": "background-color", "value": highlight, "unit": "" },
+      { "name": "background-color", "value": highlightRGBA, "unit": "" },
     ],
     "comparison": theme["QObject::handle"],
   });

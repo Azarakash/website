@@ -35,7 +35,7 @@ const lines = computed(() => code.split("\n"));
           {{ ";" }}
         </span>
         <span
-          v-if="line.split(':')[1].split(';')[0].startsWith(' #')"
+          v-if="line.split(':')[1].split(';')[0].startsWith(' rgba')"
           class="ml-2 inline-block size-3 border align-sub"
           :style="{ background: line.split(':')[1].split(';')[0] }"
         ></span>
