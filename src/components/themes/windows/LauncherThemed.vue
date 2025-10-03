@@ -13,18 +13,24 @@ const {
   tooltipText,
   borderless,
   handlers,
+  buttonBorderless,
+  buttonPadding,
+  buttonBackground,
 } = defineProps<{
-  "highlight"      : string;
-  "highlightedText": string;
-  "buttonText"     : string;
-  "background"     : string;
-  "backgroundText" : string;
-  "text"           : string;
-  "base"           : string;
-  "tooltipBase"    : string;
-  "tooltipText"    : string;
-  "borderless"     : boolean;
-  "handlers"       : boolean;
+  "highlight"       : string;
+  "highlightedText" : string;
+  "buttonText"      : string;
+  "background"      : string;
+  "backgroundText"  : string;
+  "text"            : string;
+  "base"            : string;
+  "tooltipBase"     : string;
+  "tooltipText"     : string;
+  "borderless"      : boolean;
+  "handlers"        : boolean;
+  "buttonBorderless": boolean;
+  "buttonPadding"   : false | string;
+  "buttonBackground": false | string;
 }>();
 
 const buttons = {
@@ -43,6 +49,25 @@ const buttons = {
     { "name": "Update", "icon": "i-lucide-cloud" },
   ],
 };
+
+function getToolBarButtonBackground(name: string, inputBackground: false | string, inputBorderless: boolean) {
+  if (name !== "Settings" || (inputBorderless && (inputBackground === false))) {
+    return "transparent";
+  }
+
+  if (inputBorderless) {
+    return inputBackground + "25";
+  }
+
+  return "linear-gradient(to bottom, #ffffff22, #ffffff11)";
+}
+function getToolBarButtonBorderColor(name: string, buttonBorderless: boolean) {
+  if (name !== "Settings" || buttonBorderless) {
+    return "transparent";
+  }
+
+  return "#ffffff27";
+}
 </script>
 
 <template>
@@ -54,7 +79,7 @@ const buttons = {
         padding   : '4px',
       }"
     >
-      <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap">
+      <div class="flex flex-wrap items-center gap-0 sm:flex-nowrap">
         <div
           v-if="handlers"
           class="h-6 w-1 shrink-0 cursor-move bg-red"
@@ -63,7 +88,13 @@ const buttons = {
         <div
           v-for="button in buttons.menu"
           :key="button.name"
-          class="relative flex flex-nowrap items-center"
+          class="relative flex flex-nowrap items-center border"
+          :style="{
+            background  : getToolBarButtonBackground(button.name, buttonBackground, buttonBorderless),
+            borderColor : getToolBarButtonBorderColor(button.name, buttonBorderless),
+            borderRadius: buttonBorderless ? 0 : '2px',
+            padding     : buttonPadding || '2px 4px',
+          }"
         >
           <div :class="['size-6', button.icon]" />
           <div
@@ -74,7 +105,7 @@ const buttons = {
           </div>
           <div
             v-if="button.name === 'Settings'"
-            class="absolute left-0 top-7 select-text p-1 text-nowrap text-xs leading-none"
+            class="absolute left-0 top-8 select-text p-1 text-nowrap text-xs leading-none"
             :style="{
               background: tooltipBase,
               color     : tooltipText,

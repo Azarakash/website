@@ -214,6 +214,9 @@ watchEffect(() => {
           :tooltip-text="colors.ToolTipText"
           :borderless="styles.LayoutBorder"
           :handlers="styles['QObject::handle']"
+          :button-borderless="styles['QToolButton'].border"
+          :button-padding="styles['QToolButton'].padding"
+          :button-background="styles['QToolButton']['background-color']"
         />
         <SettingsThemed
           :highlight="colors.Highlight"
