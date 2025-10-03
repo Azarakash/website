@@ -8,7 +8,6 @@ import LauncherThemed from "@/components/themes/windows/LauncherThemed.vue";
 import SettingsThemed from "@/components/themes/windows/SettingsThemed.vue";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
-import "vue-code-highlighter/dist/style.css";
 import { transformToCss } from "@/lib/helpers/transform-to-css.ts";
 import HighlighterLoading from "@/components/themes/HighlighterLoading.vue";
 import { readImportedColors } from "@/lib/helpers/read-imported-colors.ts";
