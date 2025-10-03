@@ -29,6 +29,25 @@ const colorEntries = [
   ["QPushButton", "QPushButton"],
   ["QTabBar::tab", "QTabBar::tab:selected"],
 ] as const;
+const numberRangeInputs = computed(() => {
+  return [
+    {
+      "selector": "QTabBar::tab",
+      "property": "margin-right",
+      "value"   : styles["QTabBar::tab"]["margin-right"],
+      "check"   : styles["QTabBar::tab"].border,
+      "text"    : "gap between",
+    },
+    {
+      "selector": "QTabBar::tab",
+      "property": "padding",
+      "value"   : styles["QTabBar::tab"]["padding"],
+      "check"   : styles["QTabBar::tab"].border,
+      "text"    : "padding",
+    },
+  ] as const;
+});
+
 const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
   const data = target as Partial<{ "name": typeof colorEntries[number][1]; "value": string }>;
 
@@ -93,6 +112,24 @@ const handleColorInput = useDebounceFn(({ target }: { "target": unknown }) => {
     }
   }
 }, 300);
+const handleNumberChange = ({ target }: { "target": unknown }) => {
+  const data = target as Partial<{ "name": string; "value": string }>;
+
+  if (!data?.name || !data?.value) {
+    return;
+  }
+
+  const selector = data.name.split("__")[0] as "QTabBar::tab";
+  const property = data.name.split("__")[1];
+
+  modifyStyles({
+    ...styles,
+    [selector]: {
+      ...styles[selector],
+      [property]: Number(data.value),
+    },
+  });
+};
 
 function selectAccent() {
   // ???
@@ -139,7 +176,8 @@ function toggleButton(selector: UnwrapRef<typeof styleResetButtons>[number]["sel
     ...styles,
     [selector]: {
       ...styles[selector],
-      "border": !styles[selector].border,
+      "border" : !styles[selector].border,
+      "padding": styles[selector].border ? 0 : 4,
     },
   });
 }
@@ -162,14 +200,14 @@ function getPushButtonBackground(inputBackground: false | string, borderless: bo
     <button @click="resetStyles" class="w-fit flex flex-nowrap items-center gap-4 rounded-md py-2 pl-2 pr-3 transition-[background-color] hover:bg-catppuccin-800">
       <span class="i-lucide-rotate-ccw block size-6 text-gray-400" />
       <span class="block text-gray-400 font-medium">
-        Reset Styles
-      </span>
+      Reset Styles
+    </span>
     </button>
     <button @click="selectAccent" class="w-fit flex flex-nowrap items-center gap-4 rounded-md py-2 pl-2 pr-3 transition-[background-color] hover:bg-catppuccin-800">
       <span class="i-lucide-palette block size-6 text-gray-400" />
       <span class="block text-gray-400 font-medium">
-        Use Accent Color
-      </span>
+      Use Accent Color
+    </span>
     </button>
     <div
       v-for="styleResetButton in styleResetButtons"
@@ -217,17 +255,30 @@ function getPushButtonBackground(inputBackground: false | string, borderless: bo
         </label>
       </div>
     </template>
-    <div class="flex flex-nowrap items-center">
-      <input
-        type="number"
-        class="w-16 rounded-md bg-catppuccin-700 p-2 text-xs focus:outline-none"
-      />
-      <label :for="`color-uhhh`" class="cursor-pointer pl-2 text-gray-400 font-medium">
-        <span class="text-white">d</span>
-        <span>{{ " " }}</span>
-        <span>& its states</span>
-      </label>
-    </div>
+    <template
+      v-for="numberInput in numberRangeInputs"
+      :key="numberInput.selector"
+    >
+      <div v-if="numberInput.check" class="flex flex-nowrap items-center">
+        <input
+          type="number"
+          @input="handleNumberChange"
+          min="0"
+          max="16"
+          :id="`${numberInput.selector}__${numberInput.property}`"
+          :name="`${numberInput.selector}__${numberInput.property}`"
+          :value="numberInput.value"
+          class="w-16 rounded-md bg-catppuccin-700 p-2 text-xs focus:outline-none"
+        />
+        <label :for="`${numberInput.selector}__${numberInput.property}`" class="cursor-pointer pl-2 text-gray-400 font-medium">
+          <span class="text-white">
+            {{ numberInput.selector }}
+          </span>
+          <span>{{ " " }}</span>
+          <span>gap between</span>
+        </label>
+      </div>
+    </template>
   </div>
   <div
     class="flex flex-wrap gap-2 border border-[#7a7a7a] p-2"

@@ -233,6 +233,7 @@ watchEffect(() => {
           :text="colors.Text"
           :base="colors.Base"
           :tab-widget-pane="styles['QTabWidget::pane'].border"
+          :tab-background="styles['QTabBar::tab:selected']['background-color']"
           :tab-borderless="styles['QTabBar::tab'].border"
           :tab-padding="styles['QTabBar::tab'].padding"
           :tab-gap="styles['QTabBar::tab']['margin-right']"

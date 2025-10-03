@@ -75,7 +75,7 @@ export function transformToCss({
     "labels"    : ["QTabBar::tab"],
     "properties": [
       { "name": "border", "value": theme["QTabBar::tab"].border ? 0 : "", "unit": "" },
-      { "name": "padding", "value": theme["QTabBar::tab"].padding, "unit": "" },
+      { "name": "padding", "value": theme["QTabBar::tab"].padding, "unit": "px" },
       { "name": "margin-right", "value": theme["QTabBar::tab"]["margin-right"], "unit": "px" },
     ],
     "comparison":
@@ -102,7 +102,7 @@ export function transformToCss({
     "labels"    : ["QToolButton"],
     "properties": [
       { "name": "border", "value": theme["QToolButton"].border ? 0 : "", "unit": "" },
-      { "name": "padding", "value": theme["QToolButton"].padding, "unit": "" },
+      { "name": "padding", "value": theme["QToolButton"].padding, "unit": "px" },
       { "name": "background-color", "value": theme["QToolButton"]["background-color"], "unit": "" },
     ],
     "comparison":
@@ -114,7 +114,7 @@ export function transformToCss({
     "labels"    : ["QPushButton"],
     "properties": [
       { "name": "border", "value": theme["QPushButton"].border ? 0 : "", "unit": "" },
-      { "name": "padding", "value": theme["QPushButton"].padding, "unit": "" },
+      { "name": "padding", "value": theme["QPushButton"].padding, "unit": "px" },
       { "name": "background-color", "value": theme["QPushButton"]["background-color"], "unit": "" },
     ],
     "comparison":

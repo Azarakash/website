@@ -11,6 +11,7 @@ const {
   backgroundText,
   base,
   tabWidgetPane,
+  tabBackground,
   tabBorderless,
   tabPadding,
   tabGap,
@@ -23,6 +24,7 @@ const {
   "backgroundText": string;
   "base"          : string;
   "tabWidgetPane" : boolean;
+  "tabBackground" : false | string;
   "tabBorderless" : boolean;
   "tabPadding"    : false | string;
   "tabGap"        : false | number;
@@ -91,7 +93,12 @@ const itemsThemesSettings = [
         <Image class-names="size-6" src="/favicon.webp" alt="Freesm Launcher logo" />
       </div>
       <div class="h-full w-full flex flex-col">
-        <div class="flex flex-nowrap items-end px-[2px]">
+        <div
+          :class="[
+            'flex flex-nowrap items-end',
+            tabBorderless ? 'px-2' : 'px-[2px]',
+          ]"
+        >
           <div
             v-for="name in ['Features', 'User Interface', 'Console']"
             :key="name"
@@ -102,13 +109,15 @@ const itemsThemesSettings = [
                 : 'border-b-2 opacity-80',
             ]"
             :style="{
-              background  : tabBorderless ? 'transparent' : buttonColor,
+              background  : tabBorderless
+                ? tabBackground || 'transparent'
+                : buttonColor,
               borderColor : tabBorderless ? 'transparent' : background,
               borderRadius: tabBorderless ? 0 : '2px 2px 0 0',
               color       : backgroundText,
-              marginRight : tabGap || 0,
+              marginRight : `${tabGap}px` || 0,
               padding     : tabBorderless
-                ? tabPadding || 0
+                ? `${tabPadding}px` || 0
                 : '8px',
               height: tabBorderless
                 ? 'auto'
