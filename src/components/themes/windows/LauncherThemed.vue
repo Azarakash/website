@@ -57,7 +57,7 @@ const buttons = {
       <div class="flex flex-wrap items-center gap-2 sm:flex-nowrap">
         <div
           v-if="handlers"
-          class="h-6 w-1 shrink-0 bg-red"
+          class="h-6 w-1 shrink-0 cursor-move bg-red"
           :style="{ background: highlight }"
         />
         <div
@@ -150,7 +150,7 @@ const buttons = {
       >
         <div
           v-if="handlers"
-          class="mt-1 h-1 w-[calc(100%-16px)] shrink-0 bg-red"
+          class="mt-1 h-1 w-[calc(100%-16px)] shrink-0 cursor-move bg-red"
           :style="{ background: highlight }"
         />
         <Image class-names="size-20 mt-2" src="/assets/grass.svg" alt="Grass SVG icon" />
@@ -189,7 +189,7 @@ const buttons = {
       <div class="flex flex-nowrap items-center gap-1">
         <div
           v-if="handlers"
-          class="mr-1 h-5 w-1 shrink-0 bg-red"
+          class="mr-1 h-5 w-1 shrink-0 cursor-move bg-red"
           :style="{ background: highlight }"
         />
         <div class="i-fluent-news-16-regular" />

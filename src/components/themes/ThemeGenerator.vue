@@ -23,10 +23,10 @@ const styles = ref<typeof DefaultCSS>({ ...DefaultCSS, ...(readThemeGeneratorSty
 
 const currentCode = computed(() => {
   const computedStyles = transformToCss({ "theme": styles.value, "highlight": colors.value.Highlight });
+  const randomKey = Math.floor(Math.random() * 10_000);
 
   return {
-    // needed to re-render the code view component
-    "key" : Math.random().toString(),
+    "key" : randomKey,
     "data": [
       {
         "lang" : "json",
@@ -37,7 +37,7 @@ const currentCode = computed(() => {
             "fadeAmount": 0.5,
             "fadeColor" : "#000000",
           },
-          "name"   : `A Custom Theme <${Math.floor(Math.random() * 10_000)}>`,
+          "name"   : `A Custom Theme <${randomKey}>`,
           "widgets": "Fusion",
         }, null, 2),
       },
@@ -76,7 +76,7 @@ function resetStyles() {
 
 function downloadTheme() {
   const zip = new JSZip;
-  const randomKey = Math.floor(Math.random() * 10_000);
+  const randomKey = currentCode.value.key;
   const folder = zip.folder(`customTheme${randomKey}`);
 
   if (!folder) {
