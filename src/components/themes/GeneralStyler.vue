@@ -20,8 +20,11 @@ const {
 
 <template>
   <div class="w-full flex flex-col gap-2">
-    <button class="w-fit" @click="resetStyles">
-      Reset all styles
+    <button @click="resetStyles" class="w-fit flex flex-nowrap items-center gap-4 rounded-md py-2 pl-2 pr-3 transition-[background-color] hover:bg-catppuccin-800">
+      <span class="i-lucide-rotate-ccw block size-6 text-gray-400" />
+      <span class="block text-gray-400 font-medium">
+        Reset Styles
+      </span>
     </button>
     <div class="flex flex-nowrap items-center">
       <input

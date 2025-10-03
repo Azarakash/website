@@ -12,14 +12,14 @@ const {
   base,
   tabWidgetPane,
 } = defineProps<{
-  "highlight"        : string;
-  "highlightText"    : string;
-  "background"       : string;
-  "buttonColor"      : string;
-  "text"             : string;
-  "backgroundText"   : string;
-  "base"             : string;
-  "tabWidgetPane"    : boolean;
+  "highlight"     : string;
+  "highlightText" : string;
+  "background"    : string;
+  "buttonColor"   : string;
+  "text"          : string;
+  "backgroundText": string;
+  "base"          : string;
+  "tabWidgetPane" : boolean;
 }>();
 
 const catPackStore = useCatPackState();
