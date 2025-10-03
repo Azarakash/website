@@ -206,6 +206,7 @@ watchEffect(() => {
           :background="colors.Window"
           :modify-styles="modifyStyles"
           :reset-styles="resetStyles"
+          :highlight="colors.Highlight"
         />
         <LauncherThemed
           :highlight="colors.Highlight"
@@ -221,7 +222,7 @@ watchEffect(() => {
           :handlers="styles['QObject::handle']"
           :button-borderless="styles['QToolButton'].border"
           :button-padding="styles['QToolButton'].padding"
-          :button-background="styles['QToolButton']['background-color']"
+          :button-background="styles['QToolButton:pressed']['background-color']"
         />
         <SettingsThemed
           :highlight="colors.Highlight"

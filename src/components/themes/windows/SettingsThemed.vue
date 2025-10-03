@@ -96,10 +96,10 @@ const itemsThemesSettings = [
             v-for="name in ['Features', 'User Interface', 'Console']"
             :key="name"
             :class="[
-              'text-sm leading-none text-xs',
+              'shrink-0 text-sm leading-none text-xs',
               name === 'User Interface' && !tabBorderless
-                ? 'h-[32px] border-x-2 border-t-2'
-                : 'h-[30px] border-b-2 opacity-80',
+                ? 'border-x-2 border-t-2'
+                : 'border-b-2 opacity-80',
             ]"
             :style="{
               background  : tabBorderless ? 'transparent' : buttonColor,
@@ -107,17 +107,23 @@ const itemsThemesSettings = [
               borderRadius: tabBorderless ? 0 : '2px 2px 0 0',
               color       : backgroundText,
               marginRight : tabGap || 0,
-              padding     : tabPadding || '8px',
+              padding     : tabBorderless
+                ? tabPadding || 0
+                : '8px',
+              height: tabBorderless
+                ? 'auto'
+                : name === 'User Interface'
+                  ? '32px'
+                  : '30px',
             }"
           >
             {{ name }}
           </div>
         </div>
         <div
-          class="h-full w-full flex flex-col border-x-2 border-b-2 rounded-sm"
+          class="h-full w-full flex flex-col border-x-2 border-b-2 rounded-sm p-2"
           :style="{
             background : tabWidgetPane ? 'transparent' : buttonColor,
-            padding    : tabWidgetPane ? '8px 0' : '8px',
             borderColor: tabWidgetPane ? 'transparent' : base,
           }"
         >

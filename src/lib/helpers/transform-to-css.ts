@@ -32,6 +32,10 @@ function createCssClass({
       return "";
     }
 
+    if (typeof value === "string" && value.startsWith("#")) {
+      return "\n" + String.raw`  ${name}: ${HEXToRGBA({ "hex": value })};`;
+    }
+
     return "\n" + String.raw`  ${name}: ${value}${unit};`;
   });
 
@@ -51,7 +55,6 @@ export function transformToCss({
   "changed": boolean;
   "result" : string;
 } {
-  const highlightRGBA = HEXToRGBA({ "hex": highlight });
   const layout = createCssClass({
     "labels"    : ["#mainToolBar", "#instanceToolBar", "#statusBar", "#newsToolBar"],
     "properties": [{ "name": "border", "value": 0, "unit": "" }],
@@ -159,7 +162,7 @@ export function transformToCss({
     "labels"    : ["QObject::handle"],
     "properties": [
       { "name": "margin", "value": 2, "unit": "px" },
-      { "name": "background-color", "value": highlightRGBA, "unit": "" },
+      { "name": "background-color", "value": highlight, "unit": "" },
     ],
     "comparison": theme["QObject::handle"],
   });

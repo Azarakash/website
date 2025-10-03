@@ -56,7 +56,7 @@ function getToolBarButtonBackground(name: string, inputBackground: false | strin
   }
 
   if (inputBorderless) {
-    return inputBackground + "25";
+    return inputBackground;
   }
 
   return "linear-gradient(to bottom, #ffffff22, #ffffff11)";
